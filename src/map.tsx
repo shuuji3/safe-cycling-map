@@ -107,7 +107,16 @@ export function Map() {
         }
         const f = features[0];
         popup?.remove();
-        popup = featurePopover(map, e.lngLat, (f.properties || {}) as any);
+        const type =
+          String(f.layer?.id ?? "").startsWith("route-")
+            ? "relation"
+            : "way";
+        popup = featurePopover(
+          map,
+          e.lngLat,
+          (f.properties || {}) as any,
+          type,
+        );
         pinned = pin;
         popup.on("close", () => {
           popup = null;

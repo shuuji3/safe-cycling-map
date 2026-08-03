@@ -17,7 +17,11 @@ function buildLinks(
   lat: number,
   lng: number,
   osmId: string,
+  type: "way" | "relation" | "node",
+  zoom: number,
 ): Link[] {
+  const z = Math.round(zoom);
+  const idParam = type === "node" ? `n` : type === "relation" ? `r` : `w`;
   return [
     {
       label: "Street View",
@@ -25,11 +29,15 @@ function buildLinks(
     },
     {
       label: "OSM editor",
-      href: `https://www.openstreetmap.org/edit?${lat},${lng}#map=18/${lat}/${lng}`,
+      href: osmId
+        ? `https://www.openstreetmap.org/edit?${type}=${osmId}#map=${z}/${lat}/${lng}`
+        : `https://www.openstreetmap.org/edit#map=${z}/${lat}/${lng}`,
     },
     {
       label: "Rapid",
-      href: `https://rapideditor.org/edit#map=18/${lat}/${lng}`,
+      href: osmId
+        ? `https://rapideditor.org/edit#map=${z}/${lat}/${lng}&id=${idParam}${osmId}`
+        : `https://rapideditor.org/edit#map=${z}/${lat}/${lng}`,
     },
   ];
 }
@@ -38,12 +46,13 @@ export function featurePopover(
   map: maplibregl.Map,
   lngLat: maplibregl.LngLat,
   props: Record<string, any>,
+  type: "way" | "relation" | "node",
 ): maplibregl.Popup {
   const rows = Object.entries(props).filter(([k]) => k !== "osm_id");
   const osmId = String(props.osm_id ?? "");
   const title =
     (props.name as string) || (props["class"] as string) || "Route info";
-  const links = buildLinks(lngLat.lat, lngLat.lng, osmId);
+  const links = buildLinks(lngLat.lat, lngLat.lng, osmId, type, map.getZoom());
 
   const linkHtml = links
     .map(
