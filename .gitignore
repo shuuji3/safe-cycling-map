@@ -3,3 +3,6 @@ node_modules
 build/
 
 *.swp
+
+# Downloaded OSM extracts and Planetiler temp data
+data/
