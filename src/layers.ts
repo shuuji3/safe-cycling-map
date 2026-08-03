@@ -1,9 +1,11 @@
+import maplibregl from "maplibre-gl";
+
 // TODO: Find the layer of the road labels for the maptiler background
 const layerToAddAfter = undefined;
 // const layerToAddAfter = 'greenRoadsId'; //undefined;
 
 function addLayer(
-  map: mapboxgl.Map,
+  map: maplibregl.Map,
   type:
     | "Driving"
     | "Parking"
@@ -16,7 +18,7 @@ function addLayer(
     | "LightRail"
     | "Footway"
     | "SharedUse",
-  paint: any // TODO: fix this. used to be mapboxgl.FillPaint | undefined
+  paint: any // TODO: fix this. used to be maplibregl.FillPaint | undefined
 ): void {
   map.addLayer({
     id: type,
@@ -51,7 +53,7 @@ const colours = {
   SharedUse: "#E5E1BB",
 };
 
-export const mapOnLoad = (map: mapboxgl.Map) => () => {
+export const mapOnLoad = (map: maplibregl.Map) => () => {
   const layers = map.getStyle().layers;
   // Find the index of the first symbol layer in the map style.
   let firstSymbolId;
@@ -71,7 +73,7 @@ export const mapOnLoad = (map: mapboxgl.Map) => () => {
   // Add a new vector tile source with ID 'mapillary'.
   map.addSource("osm2streets-vector-tileserver", {
     type: "vector",
-    tiles: ["https://api.safecyclingmap.com/tile/{z}/{x}/{y}"],
+    tiles: ["http://localhost:3001/tile/{z}/{x}/{y}"],
     // tiles: ["http://localhost:3000/tile/{z}/{x}/{y}"],
     
     minzoom: 17,

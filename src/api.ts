@@ -1,4 +1,5 @@
 import debounce from "debounce";
+import maplibregl from "maplibre-gl";
 import { LoadingStatusType, OverpassResponse} from "./interfaces";
 
 import * as http from "https";
@@ -54,8 +55,8 @@ export async function getOSMData(overpassQuery: string): Promise<OverpassRespons
 export const debouncedFetchAndDrawMarkers = debounce(fetchAndDrawMarkers, 2000);
 
 async function fetchAndDrawMarkers(
-  map: mapboxgl.Map,
-  markers: React.MutableRefObject<mapboxgl.Marker[]>,
+  map: maplibregl.Map,
+  markers: React.MutableRefObject<maplibregl.Marker[]>,
   setLoadingStatus: React.Dispatch<React.SetStateAction<LoadingStatusType>>
 ) {
   setLoadingStatus("loading");

@@ -1,4 +1,4 @@
-import mapboxgl from "mapbox-gl";
+import maplibregl from "maplibre-gl";
 import {
   RawOverpassNode,
 } from "./interfaces";
@@ -8,11 +8,11 @@ import { isGreenRoad, isOrangeRoad, isRedRoad } from "./osm-selectors";
 
 export function drawMarkerAndCard(
   item: RawOverpassNode,
-  map: mapboxgl.Map
-): mapboxgl.Marker {
+  map: maplibregl.Map
+): maplibregl.Marker {
   const { lat, lon } = item;
 
-  let markerOptions: mapboxgl.MarkerOptions = {};
+  let markerOptions: maplibregl.MarkerOptions = {};
   markerOptions.color = "gray";
 
   const defaultScale = 0.5;
@@ -38,7 +38,7 @@ export function drawMarkerAndCard(
     }
   }
 
-  const marker = new mapboxgl.Marker(markerOptions)
+  const marker = new maplibregl.Marker(markerOptions)
     .setLngLat([lon, lat])
     .addTo(map);
 
@@ -52,27 +52,32 @@ export function drawMarkerAndCard(
   return marker;
 }
 
-export function removeMarkers(markers: mapboxgl.Marker[]): void {
+export function removeMarkers(markers: maplibregl.Marker[]): void {
   markers.map((marker) => marker.remove());
 }
-export function removeStreetLayers(map: mapboxgl.Map): void {
-  try {
-    console.log("Removing sources...");
-    map.removeLayer('greenRoadsId');
-    map.removeLayer('redRoadsId');
-    map.removeLayer('orangeRoadsId');
-
-    map.removeSource('greenRoads');
-    map.removeSource('redRoads');
-    map.removeSource('orangeRoads');
-  } catch (e) {
-    console.log("not removing sources - at least one doesn't exist yet");
+export function removeStreetLayers(map: maplibregl.Map): void {
+  console.log("Removing sources...");
+  for (const layerId of ['greenRoadsId', 'redRoadsId', 'orangeRoadsId']) {
+    if (map.getLayer(layerId)) {
+      map.removeLayer(layerId);
+    }
+  }
+  for (const sourceId of ['greenRoads', 'redRoads', 'orangeRoads']) {
+    if (map.getSource(sourceId)) {
+      map.removeSource(sourceId);
+    }
   }
 }
 
-export function addStreetLayers(map: mapboxgl.Map, geoJson: FeatureCollection<Geometry, GeoJsonProperties>) {
-  /** Add below first vector layer */
+export function addStreetLayers(map: maplibregl.Map, geoJson: FeatureCollection<Geometry, GeoJsonProperties>) {
   const layerToAddBefore = 'SharedUse';
+
+  for (const sourceId of ['redRoads', 'orangeRoads', 'greenRoads']) {
+    if (map.getSource(sourceId)) {
+      map.removeSource(sourceId);
+    }
+  }
+
   map.addSource('redRoads', {
     type: 'geojson',
     data: {
@@ -98,7 +103,7 @@ export function addStreetLayers(map: mapboxgl.Map, geoJson: FeatureCollection<Ge
     }
   });
 
-
+  const beforeId = map.getLayer(layerToAddBefore) ? layerToAddBefore : undefined;
 
   // Add a new layer to visualize the polygon.
   map.addLayer({
@@ -111,7 +116,7 @@ export function addStreetLayers(map: mapboxgl.Map, geoJson: FeatureCollection<Ge
       "line-width": 3,
       'line-opacity': 0.3
     },
-  }, layerToAddBefore);
+  }, beforeId);
 
   map.addLayer({
     'id': 'orangeRoadsId',
@@ -123,7 +128,7 @@ export function addStreetLayers(map: mapboxgl.Map, geoJson: FeatureCollection<Ge
       "line-width": 3,
       'line-opacity': 0.5
     },
-  }, layerToAddBefore);
+  }, beforeId);
 
 
   // Add a new layer to visualize the polygon.
@@ -137,14 +142,14 @@ export function addStreetLayers(map: mapboxgl.Map, geoJson: FeatureCollection<Ge
       "line-width": 7,
       'line-opacity': 0.8
     },
-  }, layerToAddBefore);
+  }, beforeId);
 
 }
 
 export function drawMarkersAndCards(
-  map: mapboxgl.Map,
+  map: maplibregl.Map,
   items: RawOverpassNode[]
-): mapboxgl.Marker[] {
+): maplibregl.Marker[] {
   const markers = items
     .filter((item) => item.type === "node")
     .map((node: RawOverpassNode) => {

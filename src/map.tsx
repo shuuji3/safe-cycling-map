@@ -1,35 +1,29 @@
 import React, { useEffect, useState } from "react";
-import mapboxgl from "mapbox-gl";
+import maplibregl from "maplibre-gl";
+import "maplibre-gl/dist/maplibre-gl.css";
 import "./App.css";
 import { mapOnLoad } from "./layers";
-
-// @ts-ignore
-import MapboxDirections from "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions";
-import "@mapbox/mapbox-gl-directions/dist/mapbox-gl-directions.css";
-
-import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
-import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 import { debouncedFetchAndDrawMarkers } from "./api";
 import { LoadingStatusType } from "./interfaces";
 
-const MAPBOX_TOKEN =
-  "pk.eyJ1IjoiamFrZWMiLCJhIjoiY2tkaHplNGhjMDAyMDJybW4ybmRqbTBmMyJ9.AR_fnEuka8-cFb4Snp3upw";
-
 const min_overpass_turbo_zoom = 15;
+
 /** Also the min zoom of the vector tileserver */
 // const max_overpass_turbo_zoom = 15;
 
-mapboxgl.accessToken = MAPBOX_TOKEN;
+maplibregl.workerUrl = "/maplibre-gl-csp-worker.js";
+
 export function Map() {
   const mapContainer = React.useRef<HTMLDivElement>(null);
-  const mapRef = React.useRef<mapboxgl.Map | null>(null);
-  const markers = React.useRef<mapboxgl.Marker[]>([]);
+  const mapRef = React.useRef<maplibregl.Map | null>(null);
+  const markers = React.useRef<maplibregl.Marker[]>([]);
   const [loadingStatus, setLoadingStatus] =
     useState<LoadingStatusType>("ready_to_load");
 
-  const [lng, setLng] = useState(151.2160755932166);
-  const [lat, setLat] = useState(-33.88056647217827);
-  const [zoom, setZoom] = useState(17.504322191852786);
+  // Tokyo tower
+  const [lng, setLng] = useState(139.745433);
+  const [lat, setLat] = useState(35.658581);
+  const [zoom, setZoom] = useState(17.5);
 
   useEffect(() => {
     // This is called on every pan
@@ -40,26 +34,19 @@ export function Map() {
       return;
     }
 
-    mapRef.current = new mapboxgl.Map({
+    mapRef.current = new maplibregl.Map({
       container: mapContainer.current,
       center: [lng, lat],
       zoom: zoom,
       hash: true,
-      style: "mapbox://styles/mapbox/dark-v11",
+      style: "https://tiles.openfreemap.org/styles/liberty",
     });
 
     const map = mapRef.current;
     map.on("load", mapOnLoad(map));
 
-    map.addControl(new mapboxgl.NavigationControl());
-    map.addControl(new mapboxgl.FullscreenControl());
-    map.addControl(
-      new MapboxGeocoder({
-        accessToken: mapboxgl.accessToken,
-        mapboxgl: mapboxgl,
-      }),
-      "top-left"
-    );
+    map.addControl(new maplibregl.NavigationControl({}));
+    map.addControl(new maplibregl.FullscreenControl({}));
     // map.addControl(
     //   new MapboxDirections({
     //     accessToken: mapboxgl.accessToken,
@@ -67,7 +54,7 @@ export function Map() {
     //   "top-left"
     // );
     map.addControl(
-      new mapboxgl.GeolocateControl({
+      new maplibregl.GeolocateControl({
         positionOptions: {
           enableHighAccuracy: true,
         },
@@ -86,7 +73,7 @@ export function Map() {
       } else {
         setLoadingStatus("ready_to_load");
       }
-      console.log(lng, lat, zoom);
+      // console.log(lng, lat, zoom);
 
       setLng(map.getCenter().lng);
       setLat(map.getCenter().lat);
