@@ -77,7 +77,6 @@ code {
   background-color: rgb(255 255 255 / 0.9);
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
   width: var(--sidebar-content-width);
 }
 
@@ -97,7 +96,6 @@ code {
   cursor: pointer;
 }
 
-/* Check space (reserved so the swatch/name don't shift when toggling). */
 .bike-check {
   flex: none;
   width: 18px;
@@ -169,6 +167,28 @@ code {
   margin-block-end: 0.5rem;
 }
 
+.legend-collapse {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 150ms ease-out;
+}
+
+.legend-collapse:not(.open) {
+  grid-template-rows: 0fr;
+}
+
+.legend-collapse-inner {
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.legend-collapse-inner .bike-row:first-child {
+  margin-top: 0.5rem;
+}
+
 .note-toggle {
   flex: none;
   border: none;
@@ -197,7 +217,6 @@ code {
   flex: none;
 }
 
-/* Floating popover anchored next to the ⓘ button (plain React, no native API). */
 .note-popover {
   position: fixed;
   z-index: 30;
@@ -278,8 +297,6 @@ code {
   background: #eef3f8;
 }
 
-/* Mobile layout: search input pinned to the bottom (above the OSM attribution),
-   and the legend sidebar collapsed just above the search input. */
 @media (max-width: 768px) {
   .search-box {
     top: auto;

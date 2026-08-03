@@ -101,9 +101,9 @@ export function BikeLegend({ visible, onToggle, open, onFold }: Props) {
             </svg>
           </button>
         </div>
-        {open && (
-          <>
-        {BIKE_CLASSES.map((def) => (
+        <div className={open ? "legend-collapse open" : "legend-collapse"}>
+          <div className="legend-collapse-inner">
+          {BIKE_CLASSES.map((def) => (
           <div key={def.id} className="bike-row">
             <input
               id={`cb-${def.id}`}
@@ -158,8 +158,8 @@ export function BikeLegend({ visible, onToggle, open, onFold }: Props) {
             Source code
           </a>
         </div>
-          </>
-        )}
+          </div>
+        </div>
       </div>
       {openDef && (
         <div
