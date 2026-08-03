@@ -58,12 +58,32 @@
   font-size: 15px;
 }
 
+/* Bike color-ramp (colorblind-safe). Keep in sync with BIKE_CLASSES in bike.ts.
+   t-safest -> t-dangerous map to our 4 ramp colors, green to red. */
+.t-safest {
+  color: #1a9850;
+}
+
+.t-safe {
+  color: #91cf60;
+}
+
+.t-moderate {
+  color: #fdae61;
+}
+
+.t-dangerous {
+  color: #d73027;
+}
+
 h1 {
   position: fixed;
   z-index: 10;
-  bottom: 0px;
-  left: 10px;
-  color: #039f00bf;
+  bottom: 0;
+  left: 0;
+  padding: 2rem;
+  margin: 0;
+  background-color: rgb(255 255 255 / 0.9);
   font-size: calc(2vw + 2vh + 10px);
   line-height: 0.8;
 }
@@ -98,11 +118,13 @@ h1 {
   height: 30px;
   font-size: 20px;
 }
+
 .maplibregl-ctrl-bottom-left {
   right: 0;
   left: initial;
   bottom: 15px;
 }
+
 .maplibregl-ctrl-top-left {
   margin-top: 120px;
 }
