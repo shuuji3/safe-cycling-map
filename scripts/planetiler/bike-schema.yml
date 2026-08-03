@@ -1,0 +1,187 @@
+schema_name: Kanto bike overlay
+schema_description: Bike facilities in Kanto (Japan) on road ways, classified by facility type
+attribution: <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>
+args:
+  # Geofabrik URL for the Kanto extract (downloaded by the build script)
+  osm_url:
+    description: URL of the Kanto OSM PBF extract
+    default: "https://download.geofabrik.de/asia/japan/kanto-latest.osm.pbf"
+sources:
+  osm:
+    type: osm
+    url: '${ args.osm_url }'
+    local_path: data/kanto.osm.pbf
+  # Route=bicycle member ways resolved from relations by
+  # scripts/generate-route-networks.py (custommap cannot process relations).
+  route:
+    type: geojson
+    local_path: data/route_networks.geojson
+layers:
+  - id: route_network
+    features:
+      - source: route
+        geometry: line
+        min_zoom: 0
+        attributes:
+          - key: network
+          - key: osm_id
+  - id: bike
+    features:
+      - source: osm
+        geometry: line
+        min_zoom: 0
+        include_when:
+          __any__:
+            - highway: cycleway
+            - cycleway: __any__
+            - cycleway:left: __any__
+            - cycleway:right: __any__
+            # shared footways/roads where cycling is allowed
+            - __all__:
+                highway:
+                  - footway
+                  - path
+                  - pedestrian
+                bicycle:
+                  - designated
+                  - yes
+                  - permissive
+        attributes:
+          # facility type, captures the safety-relevant distinction:
+          #   cycleway       = highway=cycleway (自転車専用道路, dedicated)
+          #   track          = cycleway=track (自転車道, separated track on a road)
+          #   bike_lane      = cycleway=lane (自転車レーン, legal/dedicated bike lane)
+          #   advisory_lane  = cycleway=lane + cycleway:lane=advisory (推奨レーン,
+          #                    suggestion lane, painted but NOT exclusive)
+          #   shared_lane    = cycleway=shared_lane (自転車ナビライン, painted sharrow,
+          #                    shared lane, NOT legal)
+          #   bicycle_designated = shared footway/path where bicycle=designated
+          #   other          = any other cycleway* value
+          - key: class
+            value: >-
+              ${ feature.tags.has("highway","cycleway") ? "cycleway" :
+              (feature.tags.has("cycleway","track") || feature.tags.has("cycleway:left","track") || feature.tags.has("cycleway:right","track")) ? "track" :
+              (feature.tags.has("cycleway","shared_lane") || feature.tags.has("cycleway:left","shared_lane") || feature.tags.has("cycleway:right","shared_lane")) ? "shared_lane" :
+              feature.tags.has("cycleway:lane","advisory") ? "advisory_lane" :
+              (feature.tags.has("cycleway","lane") || feature.tags.has("cycleway:left","lane") || feature.tags.has("cycleway:right","lane")) ? "bike_lane" :
+              feature.tags.has("bicycle") ? "bicycle_designated" : "other" }
+          - key: highway
+          - key: oneway
+          - key: name
+          - key: bicycle
+examples:
+  - name: dedicated cycleway
+    input:
+      geometry: line
+      source: osm
+      tags:
+        highway: cycleway
+        bicycle: designated
+    output:
+      - layer: bike
+        geometry: line
+        min_zoom: 0
+        tags:
+          class: cycleway
+          highway: cycleway
+          bicycle: designated
+  - name: on-road bike lane (自転車レーン)
+    input:
+      geometry: line
+      source: osm
+      tags:
+        highway: secondary
+        cycleway: lane
+    output:
+      - layer: bike
+        geometry: line
+        min_zoom: 0
+        tags:
+          class: bike_lane
+          highway: secondary
+  - name: bike lane on one side only
+    input:
+      geometry: line
+      source: osm
+      tags:
+        highway: residential
+        cycleway:left: lane
+    output:
+      - layer: bike
+        geometry: line
+        min_zoom: 0
+        tags:
+          class: bike_lane
+          highway: residential
+  - name: shared-lane nav mark (自転車ナビライン)
+    input:
+      geometry: line
+      source: osm
+      tags:
+        highway: residential
+        cycleway: shared_lane
+    output:
+      - layer: bike
+        geometry: line
+        min_zoom: 0
+        tags:
+          class: shared_lane
+          highway: residential
+  - name: advisory (suggestion) lane (推奨レーン)
+    input:
+      geometry: line
+      source: osm
+      tags:
+        highway: secondary
+        cycleway: lane
+        cycleway:lane: advisory
+    output:
+      - layer: bike
+        geometry: line
+        min_zoom: 0
+        tags:
+          class: advisory_lane
+          highway: secondary
+  - name: separated cycle track
+    input:
+      geometry: line
+      source: osm
+      tags:
+        highway: tertiary
+        cycleway:right: track
+    output:
+      - layer: bike
+        geometry: line
+        min_zoom: 0
+        tags:
+          class: track
+          highway: tertiary
+  - name: shared footway with bicycle designated
+    input:
+      geometry: line
+      source: osm
+      tags:
+        highway: footway
+        bicycle: designated
+    output:
+      - layer: bike
+        geometry: line
+        min_zoom: 0
+        tags:
+          class: bicycle_designated
+          highway: footway
+          bicycle: designated
+  - name: national cycle route member way
+    input:
+      geometry: line
+      source: route
+      tags:
+        network: ncn
+        osm_id: 22486748
+    output:
+      - layer: route_network
+        geometry: line
+        min_zoom: 0
+        tags:
+          network: ncn
+          osm_id: 22486748
