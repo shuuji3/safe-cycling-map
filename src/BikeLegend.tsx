@@ -4,11 +4,13 @@ import { BIKE_CLASSES } from "./bike";
 interface Props {
   visible: Record<string, boolean>;
   onToggle: (id: string, checked: boolean) => void;
+  open: boolean;
+  onFold: () => void;
 }
 
 // Sidebar with per-category checkboxes and a hover/click-pin popover that
 // explains the OSM tags each layer uses.
-export function BikeLegend({ visible, onToggle }: Props) {
+export function BikeLegend({ visible, onToggle, open, onFold }: Props) {
   // Which row's OSM-tag popover is open (anchored at the ⓘ button) and whether
   // it was pinned by a click (stays until clicked outside or toggled).
   const [note, setNote] = useState<{ id: string; x: number; y: number } | null>(
@@ -81,8 +83,26 @@ export function BikeLegend({ visible, onToggle }: Props) {
 
   return (
     <>
-      <div className="sidebar bike-sidebar">
-        <h2>自転車道のカテゴリー</h2>
+      <div className="bike-sidebar">
+        <div className="legend-head">
+          <h2>自転車道のカテゴリー</h2>
+          <button
+            type="button"
+            className="legend-fold"
+            onClick={onFold}
+            title={open ? "閉じる" : "開く"}
+          >
+            <svg className="legend-icon" viewBox="0 0 24 24" aria-hidden="true">
+              {open ? (
+                <path d="M16.59 5.41L15.17 4L12 7.17L8.83 4L7.41 5.41L12 10m-4.59 8.59L8.83 20L12 16.83L15.17 20l1.41-1.41L12 14z" />
+              ) : (
+                <path d="M12 18.17L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15M12 5.83L15.17 9l1.41-1.41L12 3L7.41 7.59L8.83 9z" />
+              )}
+            </svg>
+          </button>
+        </div>
+        {open && (
+          <>
         {BIKE_CLASSES.map((def) => (
           <div key={def.id} className="bike-row">
             <input
@@ -138,6 +158,8 @@ export function BikeLegend({ visible, onToggle }: Props) {
             Source code
           </a>
         </div>
+          </>
+        )}
       </div>
       {openDef && (
         <div

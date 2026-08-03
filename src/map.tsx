@@ -56,6 +56,12 @@ export function Map() {
     Object.fromEntries(BIKE_CLASSES.map((c) => [c.id, true]))
   );
 
+  // Whether the legend sidebar is expanded or collapsed to a small button.
+  // Collapsed by default on narrow (mobile) screens.
+  const [legendOpen, setLegendOpen] = useState(
+    () => typeof window === "undefined" || window.innerWidth > 768,
+  );
+
   useEffect(() => {
     if (mapContainer.current === null) {
       return;
@@ -131,6 +137,8 @@ export function Map() {
         onToggle={(id, checked) =>
           setVisible((v) => ({ ...v, [id]: checked }))
         }
+        open={legendOpen}
+        onFold={() => setLegendOpen((v) => !v)}
       />
       <div ref={mapContainer} className="map-container" />
     </div>

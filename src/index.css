@@ -9,7 +9,6 @@ body {
 
 :root {
   --sidebar-content-width: 340px;
-  --sidebar-padding: 1.5rem;
 }
 
 code {
@@ -26,28 +25,60 @@ code {
   height: 100vh;
 }
 
-.sidebar {
-  position: fixed;
-  top: 48px;
-  left: 0;
-  margin: 0.5rem;
-  border-radius: 0.5rem;
-  z-index: 10;
-  padding: 1.5rem;
-  background-color: rgb(255 255 255 / 0.9);
+.legend-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 1.2rem;
+}
+
+.legend-head h2 {
+  font-size: 1rem;
+  line-height: 1.2;
+  margin: 0;
+}
+
+/* Collapse control: a borderless, background-less icon button aligned with
+   the heading line. */
+.legend-fold {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #444;
+}
+
+.legend-fold:focus-visible {
+  outline: 2px solid #1a9850;
+  outline-offset: 1px;
+}
+
+.legend-fold .legend-icon {
+  width: 28px;
+  height: 28px;
+  fill: currentColor;
 }
 
 .bike-sidebar {
+  position: fixed;
+  top: 54px;
+  left: 0;
+  border-radius: 0.5rem;
+  z-index: 10;
+  margin: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  background-color: rgb(255 255 255 / 0.9);
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  max-width: 340px;
-
-  & h2 {
-    font-size: 1.2rem;
-    margin: 0;
-    margin-block-end: 0.5rem;
-  }
+  gap: 0.5rem;
+  width: var(--sidebar-content-width);
 }
 
 .bike-row {
@@ -206,7 +237,7 @@ code {
   position: absolute;
   top: 8px;
   left: 0.5rem;
-  width: calc(var(--sidebar-content-width) + (var(--sidebar-padding) * 2));
+  width: calc(var(--sidebar-content-width) + 1.25rem * 2);
   max-width: calc(100vw - 1rem);
   z-index: 20;
 }
@@ -214,10 +245,10 @@ code {
 .search-box input {
   box-sizing: border-box;
   width: 100%;
-  padding: 8px 12px;
+  padding: 0.75rem 1rem;
   font-size: 15px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 0.5rem;
 }
 
 .search-results {
@@ -244,4 +275,30 @@ code {
 
 .search-result.active {
   background: #eef3f8;
+}
+
+/* Mobile layout: search input pinned to the bottom (above the OSM attribution),
+   and the legend sidebar collapsed just above the search input. */
+@media (max-width: 768px) {
+  .search-box {
+    top: auto;
+    bottom: 3rem;
+    left: 0.5rem;
+    right: 0.5rem;
+    width: auto;
+    max-width: none;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .bike-sidebar {
+    top: auto;
+    bottom: calc(3rem + 3.4rem);
+    left: 0.5rem;
+    right: 0.5rem;
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding: 0.4rem 0.75rem;
+  }
 }
