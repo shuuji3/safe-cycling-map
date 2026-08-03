@@ -1,5 +1,5 @@
 {
-  "name": "sydney-advertising-map",
+  "name": "japan-safe-cycling-map",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
@@ -76,7 +76,7 @@
     "extends": "react-app"
   },
   "browserslist": ">0.2%, not dead, not ie 11, not chrome < 51, not safari < 10, not android < 51",
-  "homepage": "https://sydneyadvertisingmap.com",
+  "homepage": "https://japan-safe-cycling-map.shuuji3.xyz",
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
