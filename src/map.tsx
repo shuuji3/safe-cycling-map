@@ -3,30 +3,60 @@ import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./App.css";
 import { mapOnLoad } from "./layers";
-import { debouncedFetchAndDrawMarkers } from "./api";
-import { LoadingStatusType } from "./interfaces";
-
-const min_overpass_turbo_zoom = 15;
-
-/** Also the min zoom of the vector tileserver */
-// const max_overpass_turbo_zoom = 15;
-
+import { BikeLegend } from "./BikeLegend";
+import {
+  BIKE_CLASSES,
+  ROUTE_NETWORKS,
+  initBikeLayers,
+  setBikeClassVisible,
+  setRouteNetworkVisible,
+} from "./bike";
 maplibregl.workerUrl = "/maplibre-gl-csp-worker.js";
+
+// No yellowish roads — liberty's warm palette is re-hued to a light cool-blue
+// ramp so nothing clashes with the bike colors and it stays a light-theme map
+// (fills are pale, casings only slightly darker). Hierarchy comes from the
+// fill strength (motorway most present, minor lightest). Applied across
+// road_/tunnel_/bridge_ groups. Bike lines are untouched.
+const ROAD_COOL: Record<string, { fill: string; casing: string }> = {
+  motorway: { fill: "#a5bfd4", casing: "#8ba8c0" },
+  motorway_link: { fill: "#a5bfd4", casing: "#8ba8c0" },
+  trunk_primary: { fill: "#b6cce0", casing: "#9db9cf" },
+  secondary_tertiary: { fill: "#c6d8e8", casing: "#b0c7da" },
+  link: { fill: "#d3e2ee", casing: "#bed2e2" },
+};
+const ROAD_PREFIXES = ["road", "tunnel", "bridge"];
+
+function neutralizeYellowRoads(map: maplibregl.Map): void {
+  for (const prefix of ROAD_PREFIXES) {
+    for (const [type, colors] of Object.entries(ROAD_COOL)) {
+      const fill = `${prefix}_${type}`;
+      if (map.getLayer(fill)) {
+        map.setPaintProperty(fill, "line-color", colors.fill);
+      }
+      const casing = `${prefix}_${type}_casing`;
+      if (map.getLayer(casing)) {
+        map.setPaintProperty(casing, "line-color", colors.casing);
+      }
+    }
+  }
+}
 
 export function Map() {
   const mapContainer = React.useRef<HTMLDivElement>(null);
   const mapRef = React.useRef<maplibregl.Map | null>(null);
-  const markers = React.useRef<maplibregl.Marker[]>([]);
-  const [loadingStatus, setLoadingStatus] =
-    useState<LoadingStatusType>("ready_to_load");
 
-  // Tokyo tower
-  const [lng, setLng] = useState(139.745433);
-  const [lat, setLat] = useState(35.658581);
-  const [zoom, setZoom] = useState(17.5);
+  // Centering Kanto region
+  const [lng, setLng] = useState(139.9599);
+  const [lat, setLat] = useState(35.6493);
+  const [zoom, setZoom] = useState(9);
+
+  // Per-facility-type checkbox state (default: all visible)
+  const [visible, setVisible] = useState<Record<string, boolean>>(() =>
+    Object.fromEntries(BIKE_CLASSES.map((c) => [c.id, true]))
+  );
 
   useEffect(() => {
-    // This is called on every pan
     if (mapContainer.current === null) {
       return;
     }
@@ -34,107 +64,70 @@ export function Map() {
       return;
     }
 
-    mapRef.current = new maplibregl.Map({
+    const map = new maplibregl.Map({
       container: mapContainer.current,
       center: [lng, lat],
       zoom: zoom,
       hash: true,
       style: "https://tiles.openfreemap.org/styles/liberty",
     });
+    mapRef.current = map;
 
-    const map = mapRef.current;
-    map.on("load", mapOnLoad(map));
+    map.on("load", () => {
+      mapOnLoad(map)();
+      neutralizeYellowRoads(map);
+      initBikeLayers(map);
+      // Layers are initially added hidden; default all facility types to visible.
+      for (const def of BIKE_CLASSES) {
+        setBikeClassVisible(map, def.id, true);
+      }
+      // Route networks are toggled implicitly with the cycleway checkbox.
+      for (const def of ROUTE_NETWORKS) {
+        setRouteNetworkVisible(map, def.id, true);
+      }
+    });
 
     map.addControl(new maplibregl.NavigationControl({}));
     map.addControl(new maplibregl.FullscreenControl({}));
-    // map.addControl(
-    //   new MapboxDirections({
-    //     accessToken: mapboxgl.accessToken,
-    //   }),
-    //   "top-left"
-    // );
     map.addControl(
       new maplibregl.GeolocateControl({
-        positionOptions: {
-          enableHighAccuracy: true,
-        },
+        positionOptions: { enableHighAccuracy: true },
         trackUserLocation: true,
       })
     );
 
     map.on("move", () => {
-      if (!map) {
-        return; // wait for map to initialize
-      }
-      const { lng, lat } = map.getCenter();
-      const zoom = map.getZoom();
-      if (zoom < min_overpass_turbo_zoom) {
-        setLoadingStatus("too_zoomed_out");
-      } else {
-        setLoadingStatus("ready_to_load");
-      }
-      // console.log(lng, lat, zoom);
-
       setLng(map.getCenter().lng);
       setLat(map.getCenter().lat);
       setZoom(map.getZoom());
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-    if (map.getZoom() < min_overpass_turbo_zoom) {
-      setLoadingStatus("too_zoomed_out");
-    } else {
-      console.log(`zoom is ${map.getZoom()}`);
-      debouncedFetchAndDrawMarkers(map, markers, setLoadingStatus);
+  // Apply checkbox changes to layer visibility.
+  // Route networks follow the "cycleway" checkbox implicitly.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) {
+      return;
     }
+    for (const def of BIKE_CLASSES) {
+      setBikeClassVisible(map, def.id, !!visible[def.id]);
+    }
+    const routesOn = !!visible["cycleway"];
+    for (const def of ROUTE_NETWORKS) {
+      setRouteNetworkVisible(map, def.id, routesOn);
+    }
+  }, [visible]);
 
-    map.on("moveend", async () => {
-      if (map === null) {
-        return;
-      }
-      const zoom = map.getZoom();
-      if (zoom > min_overpass_turbo_zoom) {
-        console.log(`zoom is ${zoom}`);
-        debouncedFetchAndDrawMarkers(map, markers, setLoadingStatus);
-      }
-    });
-  });
-  const statusMessages = {
-    loading: "Loading safety ratings...",
-    success: "Done loading safety ratings",
-    ready_to_load: "About to load ratings...",
-    too_zoomed_out: "Zoom in to see street safety ratings",
-    unknownerror: "Error loading. Please wait a bit",
-    retrying: "Server busy, retrying...",
-    "429error": "Too many requests, please try in a bit",
-  };
-
-  const statusText = statusMessages[loadingStatus];
   return (
     <div>
-      <div className="sidebar">
-        <label>
-          <span color="red">Warning:</span> Data is open source and not guaranteed to be
-          accurate.
-          <br></br>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://github.com/jakecoppinger/safe-cycling-map/blob/main/docs/key.md"
-          >
-            View map key and how safety is calculated
-          </a>
-          <br></br>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://github.com/jakecoppinger/safe-cycling-map"
-          >
-            About this map
-          </a>
-          <br></br>
-          {statusText}
-        </label>
-      </div>
+      <BikeLegend
+        visible={visible}
+        onToggle={(id, checked) =>
+          setVisible((v) => ({ ...v, [id]: checked }))
+        }
+      />
       <div ref={mapContainer} className="map-container" />
     </div>
   );
