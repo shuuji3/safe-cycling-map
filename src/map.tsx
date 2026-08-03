@@ -4,6 +4,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import "./App.css";
 import { mapOnLoad } from "./layers";
 import { BikeLegend } from "./BikeLegend";
+import { SearchBox } from "./SearchBox";
 import {
   BIKE_CLASSES,
   ROUTE_NETWORKS,
@@ -122,6 +123,11 @@ export function Map() {
 
   return (
     <div>
+      <SearchBox
+        onSelect={(coords) =>
+          mapRef.current?.flyTo({ center: coords, zoom: 13 })
+        }
+      />
       <BikeLegend
         visible={visible}
         onToggle={(id, checked) =>

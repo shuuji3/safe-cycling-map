@@ -7,6 +7,11 @@ body {
   font-feature-settings: 'palt';
 }
 
+:root {
+  --sidebar-content-width: 340px;
+  --sidebar-padding: 1.5rem;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
   monospace;
@@ -23,7 +28,7 @@ code {
 
 .sidebar {
   position: fixed;
-  top: 0;
+  top: 48px;
   left: 0;
   margin: 0.5rem;
   border-radius: 0.5rem;
@@ -217,4 +222,48 @@ code {
 
 .maplibregl-popup-content p {
   margin: 0;
+}
+
+.search-box {
+  position: absolute;
+  top: 8px;
+  left: 0.5rem;
+  width: calc(var(--sidebar-content-width) + (var(--sidebar-padding) * 2));
+  max-width: calc(100vw - 1rem);
+  z-index: 20;
+}
+
+.search-box input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-results {
+  list-style: none;
+  width: 100%;
+  margin: 4px 0 0;
+  padding: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.2);
+  overflow: hidden;
+}
+
+.search-result {
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.search-result + .search-result {
+  border-top: 1px solid #eee;
+}
+
+.search-result.active {
+  background: #eef3f8;
 }
