@@ -122,8 +122,7 @@ export function BikeLegend({ visible, onToggle }: Props) {
             </label>
           </div>
         ))}
-        <br />
-        <label>
+        <div className="github-link">
           <a
             target="_blank"
             rel="noopener noreferrer"
@@ -138,7 +137,7 @@ export function BikeLegend({ visible, onToggle }: Props) {
             </svg>
             Source code
           </a>
-        </label>
+        </div>
       </div>
       {openDef && (
         <div

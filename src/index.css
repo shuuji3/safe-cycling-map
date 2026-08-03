@@ -145,6 +145,11 @@ code {
   padding-left: 22px;
 }
 
+.github-link {
+  display: flex;
+  justify-content: end;
+}
+
 .note-toggle {
   flex: none;
   border: none;
