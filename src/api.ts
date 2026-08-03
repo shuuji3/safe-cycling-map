@@ -11,19 +11,20 @@ import osmtogeojson from 'osmtogeojson';
 /**
  * Make request to Overpass Turbo.
  * @param overpassQuery Overpass turbo query string
- * @returns 
+ * @returns
  */
 export async function getOSMData(overpassQuery: string): Promise<OverpassResponse> {
   // overpass.kumi.systems
     // hostname: "overpass-api.de",
   const options = {
-    hostname: "overpass.kumi.systems",
+    hostname: "overpass-api.de",
     port: 443,
     path: "/api/interpreter",
     method: "POST",
     headers: {
       // "Content-Type": "application/json",
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'User-Agent': 'safe-cycling-map (https://github.com/shuuji3/safe-cycling-map)'
     },
   };
 
@@ -36,6 +37,7 @@ export async function getOSMData(overpassQuery: string): Promise<OverpassRespons
         if (res.statusCode !== 200) {
           console.log("error code", res.statusCode);
           reject(res.statusCode);
+          return;
         }
 
         const jsonResponse = JSON.parse(body);
@@ -66,17 +68,35 @@ async function fetchAndDrawMarkers(
   const northLat = bounds.getNorth();
   const eastLong = bounds.getEast();
 
-  let safeRoutes: OverpassResponse;
-
   const overpassBounds = [southernLat, westLong, northLat, eastLong];
   const boundsStr = overpassBounds.join(",");
-  const safeRoutesOverpassQuery = safeCycleways(boundsStr);;
+  const safeRoutesOverpassQuery = safeCycleways(boundsStr);
 
   console.log("Started POST request...");
-  try {
-    safeRoutes = await getOSMData(safeRoutesOverpassQuery);
-  } catch (e) {
-    console.log("Error:", e);
+
+  const maxAttempts = 4;
+  const baseDelayMs = 3000;
+  let safeRoutes: OverpassResponse | undefined;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      safeRoutes = await getOSMData(safeRoutesOverpassQuery);
+      break;
+    } catch (e) {
+      console.log("Error:", e, `(attempt ${attempt}/${maxAttempts})`);
+      if (attempt === maxAttempts) {
+        setLoadingStatus("unknownerror");
+        return;
+      }
+      // Let the user know we're retrying, and how many times left.
+      const remaining = maxAttempts - attempt;
+      setLoadingStatus("retrying");
+      console.log(`Overpass busy, retrying in ${Math.round((baseDelayMs * attempt) / 1000)}s (${remaining} left)`);
+      await sleep(baseDelayMs * attempt);
+    }
+  }
+
+  if (!safeRoutes) {
     setLoadingStatus("unknownerror");
     return;
   }
@@ -87,6 +107,10 @@ async function fetchAndDrawMarkers(
 
   removeStreetLayers(map);
   addStreetLayers(map, geoJson);
-  
+
   setLoadingStatus("success");
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }

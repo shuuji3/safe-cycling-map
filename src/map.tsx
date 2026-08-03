@@ -104,6 +104,7 @@ export function Map() {
     ready_to_load: "About to load ratings...",
     too_zoomed_out: "Zoom in to see street safety ratings",
     unknownerror: "Error loading. Please wait a bit",
+    retrying: "Server busy, retrying...",
     "429error": "Too many requests, please try in a bit",
   };
 
