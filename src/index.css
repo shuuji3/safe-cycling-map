@@ -166,6 +166,7 @@ code {
 .github-link {
   display: flex;
   justify-content: end;
+  margin-block-end: 0.5rem;
 }
 
 .note-toggle {
