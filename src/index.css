@@ -39,8 +39,6 @@ code {
   margin: 0;
 }
 
-/* Collapse control: a borderless, background-less icon button aligned with
-   the heading line. */
 .legend-fold {
   display: flex;
   align-items: center;
@@ -301,7 +299,6 @@ code {
   background: #eef3f8;
 }
 
-/* Feature-info popover (click a bike/route line). */
 .feature-info {
   font-size: 1rem;
   line-height: 1.5;
