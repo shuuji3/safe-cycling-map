@@ -156,7 +156,8 @@ code {
 }
 
 .bike-toggle-summary {
-  font-size: 0.72rem;
+  font-size: 0.9rem;
+
   color: #333;
   padding-left: 22px;
 }
@@ -230,13 +231,15 @@ code {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  font-size: 0.78rem;
+  font-size: 0.9rem;
+
   line-height: 1.4;
 }
 
 .note-heading {
   font-weight: bold;
-  font-size: 0.72rem;
+  font-size: 0.9rem;
+
   color: #555;
 }
 
@@ -247,7 +250,8 @@ code {
 }
 
 .bike-toggle-tag {
-  font-size: 0.72rem;
+  font-size: 0.9rem;
+
   border: 1px solid #ddd;
   border-radius: 3px;
   padding: 0 3px;
@@ -295,6 +299,105 @@ code {
 
 .search-result.active {
   background: #eef3f8;
+}
+
+/* Feature-info popover (click a bike/route line). */
+.feature-info {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #222;
+}
+
+.info-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+}
+
+.info-title {
+  flex: 1;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.info-close {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #555;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.info-close:hover {
+  background: #f0f0f0;
+  color: #000;
+}
+
+.info-close:focus-visible {
+  outline: 2px solid #1a9850;
+  outline-offset: 1px;
+}
+
+.info-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.info-table td {
+  padding: 3px 4px;
+  font-size: 1rem;
+}
+
+.info-table tr + tr td {
+  border-top: 1px solid #eee;
+}
+
+.info-key {
+  font-weight: 600;
+  color: #555;
+  white-space: nowrap;
+  padding-right: 10px;
+}
+
+.info-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+
+.info-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #1a5f3a;
+  text-decoration: underline;
+}
+
+.info-link:hover {
+  color: #0d3d24;
+}
+
+.info-link:focus-visible {
+  outline: 2px solid #1a9850;
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 @media (max-width: 768px) {

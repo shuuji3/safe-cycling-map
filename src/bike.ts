@@ -251,3 +251,11 @@ export function setRouteNetworkVisible(map: maplibregl.Map, net: string, visible
     map.setLayoutProperty(id, "visibility", visible ? "visible" : "none");
   }
 }
+
+export function bikeLayerIds(): string[] {
+  return BIKE_CLASSES.map((d) => LAYER_PREFIX + d.id);
+}
+
+export function routeLayerIds(): string[] {
+  return ROUTE_NETWORKS.map((d) => ROUTE_PREFIX + d.id);
+}

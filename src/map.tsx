@@ -7,10 +7,13 @@ import { SearchBox } from "./SearchBox";
 import {
   BIKE_CLASSES,
   ROUTE_NETWORKS,
+  bikeLayerIds,
   initBikeLayers,
+  routeLayerIds,
   setBikeClassVisible,
   setRouteNetworkVisible,
 } from "./bike";
+import { featurePopover } from "./featureInfo";
 maplibregl.workerUrl = "/maplibre-gl-csp-worker.js";
 
 // No yellowish roads — liberty's warm palette is re-hued to a light cool-blue
@@ -90,6 +93,65 @@ export function Map() {
       for (const def of ROUTE_NETWORKS) {
         setRouteNetworkVisible(map, def.id, true);
       }
+
+      // Info popover: hover shows it, click pins it, Esc / outside-click closes.
+      let popup: maplibregl.Popup | null = null;
+      let pinned = false;
+      let over = false;
+      const ids = [...bikeLayerIds(), ...routeLayerIds()];
+
+      function showPopup(e: any, pin: boolean): void {
+        const features = map.queryRenderedFeatures(e.point, { layers: ids });
+        if (!features.length) {
+          return;
+        }
+        const f = features[0];
+        popup?.remove();
+        popup = featurePopover(map, e.lngLat, (f.properties || {}) as any);
+        pinned = pin;
+        popup.on("close", () => {
+          popup = null;
+          pinned = false;
+        });
+      }
+
+      function closePopup(): void {
+        popup?.remove();
+        popup = null;
+        pinned = false;
+      }
+
+      map.on("mousemove", (e: any) => {
+        const features = map.queryRenderedFeatures(e.point, { layers: ids });
+        if (features.length) {
+          map.getCanvas().style.cursor = "pointer";
+          if (!over) {
+            over = true;
+            if (!pinned) {
+              showPopup(e, false);
+            }
+          }
+        } else {
+          map.getCanvas().style.cursor = "";
+          over = false;
+          if (!pinned) {
+            closePopup();
+          }
+        }
+      });
+      map.on("click", (e: any) => {
+        const features = map.queryRenderedFeatures(e.point, { layers: ids });
+        if (features.length) {
+          showPopup(e, true);
+        }
+      });
+      map.on("dblclick", closePopup);
+      map.on("contextmenu", closePopup);
+      document.addEventListener("keydown", (ev) => {
+        if (ev.key === "Escape") {
+          closePopup();
+        }
+      });
     });
 
     map.addControl(new maplibregl.NavigationControl({}));
