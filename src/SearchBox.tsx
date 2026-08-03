@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // Free geocoding via Komoot's public Photon instance. It's a courtesy API:
 // "use the API for your project as long as the number of requests stay in a

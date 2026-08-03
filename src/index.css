@@ -37,23 +37,6 @@ code {
   background-color: rgb(255 255 255 / 0.9);
 }
 
-.legend-toggle {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 20;
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #222;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 0.4rem 0.7rem;
-  box-shadow: 0 1px 4px rgb(0 0 0 / 0.2);
-}
-
 .bike-sidebar {
   display: flex;
   flex-direction: column;
@@ -112,7 +95,6 @@ code {
   border-radius: 3px;
 }
 
-.bike-info,
 .bike-toggle {
   display: flex;
   flex-direction: column;
@@ -218,10 +200,6 @@ code {
   border: 1px solid #ddd;
   border-radius: 3px;
   padding: 0 3px;
-}
-
-.maplibregl-popup-content p {
-  margin: 0;
 }
 
 .search-box {

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./App.css";
-import { mapOnLoad } from "./layers";
 import { BikeLegend } from "./BikeLegend";
 import { SearchBox } from "./SearchBox";
 import {
@@ -75,7 +74,6 @@ export function Map() {
     mapRef.current = map;
 
     map.on("load", () => {
-      mapOnLoad(map)();
       neutralizeYellowRoads(map);
       initBikeLayers(map);
       // Layers are initially added hidden; default all facility types to visible.
