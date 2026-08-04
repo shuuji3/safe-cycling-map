@@ -5,12 +5,12 @@ interface Props {
   visible: Record<string, boolean>;
   onToggle: (id: string, checked: boolean) => void;
   open: boolean;
-  onFold: () => void;
+  handleOpen: () => void;
 }
 
 // Sidebar with per-category checkboxes and a hover/click-pin popover that
 // explains the OSM tags each layer uses.
-export function BikeLegend({ visible, onToggle, open, onFold }: Props) {
+export function BikeLegend({ visible, onToggle, open, handleOpen }: Props) {
   // Which row's OSM-tag popover is open (anchored at the ⓘ button) and whether
   // it was pinned by a click (stays until clicked outside or toggled).
   const [note, setNote] = useState<{ id: string; x: number; y: number } | null>(
@@ -84,22 +84,27 @@ export function BikeLegend({ visible, onToggle, open, onFold }: Props) {
   return (
     <>
       <div className="bike-sidebar">
-        <div className="legend-head">
+        <div className="legend-head" onClick={handleOpen}
+        >
           <h2>自転車道のカテゴリー</h2>
-          <button
-            type="button"
+          <span
             className="legend-fold"
-            onClick={onFold}
             title={open ? "閉じる" : "開く"}
           >
             <svg className="legend-icon" viewBox="0 0 24 24" aria-hidden="true">
               {open ? (
-                <path d="M16.59 5.41L15.17 4L12 7.17L8.83 4L7.41 5.41L12 10m-4.59 8.59L8.83 20L12 16.83L15.17 20l1.41-1.41L12 14z" />
+                <>
+                  <path d="M0 0h24v24H0z" fill="none" />
+                  <path fill="currentColor" d="M11.625 14.913q-.175-.063-.325-.213l-4.6-4.6q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l3.9 3.9l3.9-3.9q.275-.275.7-.275t.7.275t.275.7t-.275.7l-4.6 4.6q-.15.15-.325.213t-.375.062t-.375-.062" />
+                </>
               ) : (
-                <path d="M12 18.17L8.83 15l-1.41 1.41L12 21l4.59-4.59L15.17 15M12 5.83L15.17 9l1.41-1.41L12 3L7.41 7.59L8.83 9z" />
+                <>
+                  <path d="M0 0h24v24H0z" fill="none" />
+                  <path fill="currentColor" d="m12 10.8l-3.9 3.9q-.275.275-.7.275t-.7-.275t-.275-.7t.275-.7l4.6-4.6q.3-.3.7-.3t.7.3l4.6 4.6q.275.275.275.7t-.275.7t-.7.275t-.7-.275z" />
+                </>
               )}
             </svg>
-          </button>
+          </span>
         </div>
         <div className={open ? "legend-collapse open" : "legend-collapse"}>
           <div className="legend-collapse-inner">

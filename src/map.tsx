@@ -209,7 +209,7 @@ export function Map() {
           setVisible((v) => ({ ...v, [id]: checked }))
         }
         open={legendOpen}
-        onFold={() => setLegendOpen((v) => !v)}
+        handleOpen={() => setLegendOpen((v) => !v)}
       />
       <div ref={mapContainer} className="map-container" />
     </div>
