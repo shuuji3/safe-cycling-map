@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Build a Kanto bike-facility overlay PMTiles archive from OSM data using Planetiler.
+# Build a Japan-wide bike-facility overlay PMTiles archive from OSM data using Planetiler.
 #
 # Produces: public/bike.pmtiles
-# The overlay is clipped to the Kanto bounding box (default) to keep it small.
+# The overlay covers all of Japan.
 #
 # Requirements:
 #   - Java 21 (set JAVA_HOME to a Java 21 JDK)
@@ -25,15 +25,15 @@ if [ -z "${JAVA_HOME:-}" ]; then
   done
 fi
 
-OSM_PATH="data/kanto.osm.pbf"
-OSM_URL="https://download.geofabrik.de/asia/japan/kanto-latest.osm.pbf"
+OSM_PATH="data/japan.osm.pbf"
+OSM_URL="https://download.geofabrik.de/asia/japan-latest.osm.pbf"
 ROUTES_GEOJSON="data/route_networks.geojson"
 OUTPUT="public/bike.pmtiles"
 MINZOOM="${MINZOOM:-0}"
 MAXZOOM="${MAXZOOM:-16}"
 
 if [ ! -f "$OSM_PATH" ]; then
-  echo "Downloading Kanto OSM extract ($OSM_URL) ..."
+  echo "Downloading Japan OSM extract ($OSM_URL) ..."
   mkdir -p "$(dirname "$OSM_PATH")"
   curl --user-agent "japan-safe-cycling-map (https://github.com/shuuji3/japan-safe-cycling-map)" -L --fail -o "$OSM_PATH" "$OSM_URL"
 fi

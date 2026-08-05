@@ -1,16 +1,16 @@
-schema_name: Kanto bike overlay
-schema_description: Bike facilities in Kanto (Japan) on road ways, classified by facility type
+schema_name: Japan bike overlay
+schema_description: Bike facilities in Japan on road ways, classified by facility type
 attribution: <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>
 args:
-  # Geofabrik URL for the Kanto extract (downloaded by the build script)
+  # Geofabrik URL for the Japan extract (downloaded by the build script)
   osm_url:
-    description: URL of the Kanto OSM PBF extract
-    default: "https://download.geofabrik.de/asia/japan/kanto-latest.osm.pbf"
+    description: URL of the Japan OSM PBF extract
+    default: "https://download.geofabrik.de/asia/japan-latest.osm.pbf"
 sources:
   osm:
     type: osm
     url: '${ args.osm_url }'
-    local_path: data/kanto.osm.pbf
+    local_path: data/japan.osm.pbf
   # Route=bicycle member ways resolved from relations by
   # scripts/generate-route-networks.py (custommap cannot process relations).
   route:

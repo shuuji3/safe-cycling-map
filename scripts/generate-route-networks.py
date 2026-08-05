@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Preprocess Kanto PBF -> GeoJSON of route=bicycle member ways (network icn/ncn/rcn/lcn).
+"""Preprocess Japan PBF -> GeoJSON of route=bicycle member ways (network icn/ncn/rcn/lcn).
 
 Planetiler custommap cannot resolve route relations onto member ways, so we do it
 here with pyosmium and feed the result as a geojson source.

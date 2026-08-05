@@ -89,7 +89,7 @@ export const BIKE_CLASSES: BikeClassDef[] = [
 // They render in the same solid color as the dedicated cycleway (専用道路) since
 // they are cycleway-equivalent roads, and are toggled implicitly with the
 // "cycleway" checkbox rather than having their own toggle.
-// icn is included for use outside Japan (no icn routes exist in Kanto).
+// icn is included for use outside Japan.
 export const ROUTE_NETWORKS: BikeClassDef[] = [
   {
     id: "icn",
