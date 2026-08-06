@@ -1,4 +1,5 @@
 import maplibregl from "maplibre-gl";
+import { t } from "@lingui/macro";
 
 interface Link {
   label: string;
@@ -24,17 +25,17 @@ function buildLinks(
   const idParam = type === "node" ? `n` : type === "relation" ? `r` : `w`;
   return [
     {
-      label: "Street View",
+      label: t`ストリートビュー`,
       href: `https://www.google.com/maps?layer=c&cbll=${lat},${lng}&cbp=11,0,0,0,0`,
     },
     {
-      label: "OSM editor",
+      label: t`OSMエディタ`,
       href: osmId
         ? `https://www.openstreetmap.org/edit?${type}=${osmId}#map=${z}/${lat}/${lng}`
         : `https://www.openstreetmap.org/edit#map=${z}/${lat}/${lng}`,
     },
     {
-      label: "Rapid",
+      label: t`Rapid`,
       href: osmId
         ? `https://rapideditor.org/edit#map=${z}/${lat}/${lng}&id=${idParam}${osmId}`
         : `https://rapideditor.org/edit#map=${z}/${lat}/${lng}`,
@@ -51,7 +52,7 @@ export function featurePopover(
   const rows = Object.entries(props).filter(([k]) => k !== "osm_id");
   const osmId = String(props.osm_id ?? "");
   const title =
-    (props.name as string) || (props["class"] as string) || "Route info";
+    (props.name as string) || (props["class"] as string) || t`ルート情報`;
   const links = buildLinks(lngLat.lat, lngLat.lng, osmId, type, map.getZoom());
 
   const linkHtml = links
@@ -72,12 +73,12 @@ export function featurePopover(
     <div class="feature-info">
       <div class="info-head">
         <h3 class="info-title">${escapeHtml(title)}</h3>
-        <button type="button" class="info-close" aria-label="閉じる">×</button>
+        <button type="button" class="info-close" aria-label="${t`閉じる`}">×</button>
       </div>
       <table class="info-table">
-        ${table || '<tr><td class="info-val">(no data)</td></tr>'}
+        ${table || '<tr><td class="info-val">' + t`（データなし）` + "</td></tr>"}
       </table>
-      <div class="info-links" aria-label="外部リンク">${linkHtml}</div>
+      <div class="info-links" aria-label="${t`外部リンク`}">${linkHtml}</div>
     </div>`;
 
   const popup = new maplibregl.Popup({

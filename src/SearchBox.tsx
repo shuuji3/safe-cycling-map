@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useLingui } from "@lingui/react";
+import { t } from "@lingui/macro";
 
 // Free geocoding via Komoot's public Photon instance. It's a courtesy API:
 // "use the API for your project as long as the number of requests stay in a
@@ -40,6 +42,7 @@ function resultLabel(feature: PhotonFeature): string {
 }
 
 export function SearchBox({ onSelect }: SearchBoxProps) {
+  useLingui();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<PhotonFeature[]>([]);
   const [open, setOpen] = useState(false);
@@ -100,7 +103,7 @@ export function SearchBox({ onSelect }: SearchBoxProps) {
     <div className="search-box">
       <input
         type="text"
-        placeholder="場所を検索"
+        placeholder={t`場所を検索`}
         value={query}
         onChange={(e) => {
           setQuery(e.target.value);

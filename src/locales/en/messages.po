@@ -1,0 +1,184 @@
+msgid ""
+msgstr ""
+
+#: src/featureInfo.ts:32
+msgid "OSMエディタ"
+msgstr "OpenStreetMap editor"
+
+#: src/featureInfo.ts:38
+msgid "Rapid"
+msgstr "Rapid"
+
+#: src/BikeLegend.tsx:153
+msgid "{0}が表示しているOSMタグ"
+msgstr "OSM tags displayed by {0}"
+
+#: src/bike.ts:49
+msgid "「普通自転車専用通行帯」標識や路面表示により、車道上にペイント等で指定された通行帯"
+msgstr "Dedicated lane marked on the carriageway by paint or road markings, designated by the 'ordinary bicycle dedicated lane' sign"
+
+#: src/bike.ts:58
+msgid "「自転車及び歩行者専用」標識や「普通自転車歩道通行可」指定のある歩道（歩行者優先）"
+msgstr "Sidewalk designated for bicycles and pedestrians, or where bicycles are permitted on the sidewalk (pedestrians have priority)"
+
+#: src/bike.ts:40
+msgid "「自転車専用」標識がある独立した自転車専用道路（歩行者通行不可）"
+msgstr "Dedicated cycle track with a 'bicycle only' sign (pedestrians not permitted)"
+
+#: src/bike.ts:38
+msgid "「自転車専用」標識がある道路、または車道沿いに構造物で分離された自転車道"
+msgstr "Road with a 'bicycle only' sign, or a cycle track separated from the carriageway by a physical structure"
+
+#: src/BikeLegend.tsx:196
+msgid "このレイヤーが表示しているOSMタグ"
+msgstr "OSM tags displayed by this layer"
+
+#: src/bike.ts:78
+msgid "その他（付帯設備・属性）"
+msgstr "Other (auxiliary facilities and attributes)"
+
+#: src/featureInfo.ts:28
+msgid "ストリートビュー"
+msgstr "Street View"
+
+#: src/BikeLegend.tsx:179
+msgid "ソースコード"
+msgstr "Source code"
+
+#: src/bike.ts:105
+msgid "ナショナルサイクルルート"
+msgstr "National cycle route"
+
+#: src/bike.ts:112
+msgid "リージョナルサイクルルート"
+msgstr "Regional cycle route"
+
+#: src/featureInfo.ts:55
+msgid "ルート情報"
+msgstr "Route information"
+
+#: src/bike.ts:119
+msgid "ローカルサイクルルート"
+msgstr "Local cycle route"
+
+#: src/bike.ts:83
+msgid "交差点手前の自転車用優先停止スペース（Advanced Stop Line）"
+msgstr "Advanced stop line (bicycle box) before an intersection"
+
+#: src/bike.ts:81
+msgid "交差点等の自転車横断帯"
+msgstr "Bicycle crossing area at an intersection"
+
+#: src/bike.ts:79
+msgid "交差点設備や、自転車道が車道とは別ラインで描かれている場合などの補足属性"
+msgstr "Supplementary attributes such as intersection facilities or cycleways drawn as a separate line from the carriageway"
+
+#: src/bike.ts:106
+msgid "国内の主要なルート"
+msgstr "Major national route"
+
+#: src/bike.ts:99
+msgid "国境を越える国際ルート"
+msgstr "International route crossing national borders"
+
+#: src/bike.ts:107
+msgid "国家サイクルネットワーク"
+msgstr "National cycle network"
+
+#: src/bike.ts:100
+msgid "国際サイクルネットワーク"
+msgstr "International cycle network"
+
+#: src/bike.ts:98
+msgid "国際サイクルルート"
+msgstr "International cycle route"
+
+#: src/bike.ts:120
+msgid "地方のルート"
+msgstr "Local route"
+
+#: src/bike.ts:113
+msgid "地域をまたぐルート"
+msgstr "Route spanning multiple regions"
+
+#: src/bike.ts:114
+msgid "地域サイクルネットワーク"
+msgstr "Regional cycle network"
+
+#: src/bike.ts:121
+msgid "地方サイクルネットワーク"
+msgstr "Local cycle network"
+
+#: src/SearchBox.tsx:106
+msgid "場所を検索"
+msgstr "Search for a place"
+
+#: src/featureInfo.ts:81
+msgid "外部リンク"
+msgstr "External links"
+
+#: src/bike.ts:68
+msgid "専用通行帯はなく車道を自動車と共有する区間。矢羽根型表示（ナビライン）等で走行位置を提示"
+msgstr "Shared carriageway section with no dedicated lane; riding position is shown with sharrow-style markings (navi lines)"
+
+#: src/bike.ts:60
+msgid "指定標識等により自転車の通行が許可・指定された歩道"
+msgstr "Sidewalk where bicycle use is permitted or designated by signage"
+
+#: src/bike.ts:70
+msgid "矢羽根型表示（ナビマーク・ナビライン）がある車道共有区間"
+msgstr "Shared carriageway section with sharrow markings (navi marks / navi lines)"
+
+#: src/bike.ts:61
+msgid "自転車の通行が指定されている道路・通行区分"
+msgstr "Road or lane where bicycle use is designated"
+
+#: src/bike.ts:48
+msgid "自転車専用通行帯（自転車レーン）"
+msgstr "Dedicated bicycle lane"
+
+#: src/bike.ts:37
+msgid "自転車専用道路・自転車道"
+msgstr "Dedicated cycle track / cycleway"
+
+#: src/bike.ts:57
+msgid "自転車歩行者道（自歩道）"
+msgstr "Sidewalk shared by bicycles and pedestrians"
+
+#: src/bike.ts:82
+msgid "自転車道が車道本体とは別の独立したライン（ウェイ）として作成済み"
+msgstr "Cycleway already mapped as a separate line (way) from the carriageway itself"
+
+#: src/BikeLegend.tsx:103
+msgid "自転車道のカテゴリー"
+msgstr "Cycleway categories"
+
+#: src/bike.ts:51
+msgid "車道上に区画線やカラー塗装で設けられた自転車専用通行帯"
+msgstr "Dedicated bicycle lane formed on the carriageway with lane markings or colored surfacing"
+
+#: src/bike.ts:71
+msgid "車道上の走行推奨ライン（アドバイザリーレーン）"
+msgstr "Advisory lane for recommended riding position on the carriageway"
+
+#: src/bike.ts:67
+msgid "車道共有（矢羽根・ナビマーク）"
+msgstr "Shared carriageway (sharrows / navi marks)"
+
+#: src/bike.ts:41
+msgid "車道沿いに縁石や柵などの構造物で分離された自転車道（ウェイ未分離時）"
+msgstr "Cycle track separated from the carriageway by a kerb, fence, or other structure (when not mapped as a separate way)"
+
+#: src/BikeLegend.tsx:107
+#: src/featureInfo.ts:76
+msgid "閉じる"
+msgstr "Close"
+
+#: src/BikeLegend.tsx:107
+msgid "開く"
+msgstr "Open"
+
+#: src/featureInfo.ts:79
+msgid "（データなし）"
+msgstr "(No data)"
+

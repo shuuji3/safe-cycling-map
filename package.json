@@ -4,6 +4,9 @@
   "private": true,
   "dependencies": {
     "@babel/core": "7.9.0",
+    "@lingui/core": "^3.13.3",
+    "@lingui/macro": "^3.13.3",
+    "@lingui/react": "^3.13.3",
     "@svgr/webpack": "4.3.3",
     "@types/debounce": "^1.2.1",
     "@types/osmtogeojson": "^2.2.30",
@@ -57,7 +60,6 @@
     "styled-components": "^5.1.1",
     "terser-webpack-plugin": "2.3.5",
     "ts-pnp": "1.1.6",
-    "typescript": "~3.7.2",
     "url-loader": "2.3.0",
     "webpack": "4.42.0",
     "webpack-dev-server": "3.10.3",
@@ -68,6 +70,8 @@
     "start": "PORT=5000 node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
+    "i18n:extract": "lingui extract",
+    "i18n:compile": "lingui compile",
     "deploy": "npm run build && rsync -r --progress build/ ../deploy-safe-cycling-map/ && pushd ../deploy-safe-cycling-map/ && git add -A && git commit -m \"Update\" && git push && popd && echo \"Deploy done\"",
     "update-bike-data": "scripts/build-bike-overlay.sh"
   },
@@ -75,8 +79,28 @@
     "extends": "react-app"
   },
   "browserslist": ">0.2%, not dead, not ie 11, not chrome < 51, not safari < 10, not android < 51",
+  "lingui": {
+    "locales": [
+      "ja",
+      "en"
+    ],
+    "sourceLocale": "ja",
+    "fallbackLocales": {
+      "default": "ja"
+    },
+    "catalogs": [
+      {
+        "path": "src/locales/{locale}/messages",
+        "include": [
+          "src/"
+        ]
+      }
+    ],
+    "compileNamespace": "es"
+  },
   "homepage": "https://japan-safe-cycling-map.shuuji3.xyz",
   "devDependencies": {
+    "@lingui/cli": "^3.13.3",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -84,7 +108,8 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
-    "@types/styled-components": "^5.1.2"
+    "@types/styled-components": "^5.1.2",
+    "typescript": "^3.9.10"
   },
   "jest": {
     "roots": [

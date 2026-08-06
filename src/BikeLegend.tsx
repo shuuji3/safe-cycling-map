@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useLingui } from "@lingui/react";
+import { Trans, t } from "@lingui/macro";
 import { BIKE_CLASSES } from "./bike";
+import { LanguageToggle } from "./LanguageToggle";
 
 interface Props {
   visible: Record<string, boolean>;
@@ -10,7 +13,14 @@ interface Props {
 
 // Sidebar with per-category checkboxes and a hover/click-pin popover that
 // explains the OSM tags each layer uses.
-export function BikeLegend({ visible, onToggle, open, handleOpen }: Props) {
+export function BikeLegend({
+  visible,
+  onToggle,
+  open,
+  handleOpen,
+}: Props) {
+  const { i18n } = useLingui();
+  const locale = i18n.locale;
   // Which row's OSM-tag popover is open (anchored at the ⓘ button) and whether
   // it was pinned by a click (stays until clicked outside or toggled).
   const [note, setNote] = useState<{ id: string; x: number; y: number } | null>(
@@ -86,10 +96,12 @@ export function BikeLegend({ visible, onToggle, open, handleOpen }: Props) {
       <div className="bike-sidebar">
         <div className="legend-head" onClick={handleOpen}
         >
-          <h2>自転車道のカテゴリー</h2>
+          <h2>
+            <Trans>自転車道のカテゴリー</Trans>
+          </h2>
           <span
             className="legend-fold"
-            title={open ? "閉じる" : "開く"}
+            title={open ? t`閉じる` : t`開く`}
           >
             <svg className="legend-icon" viewBox="0 0 24 24" aria-hidden="true">
               {open ? (
@@ -131,11 +143,11 @@ export function BikeLegend({ visible, onToggle, open, handleOpen }: Props) {
                   style={{ background: def.color }}
                   aria-hidden="true"
                 />
-                <span className="bike-name">{def.name}</span>
+                <span className="bike-name">{i18n._(def.name)}</span>
                 <button
                   type="button"
                   className="note-toggle"
-                  aria-label={`${def.name}が表示しているOSMタグ`}
+                  aria-label={t`${i18n._(def.name)}が表示しているOSMタグ`}
                   onMouseEnter={(e) => openOnHover(e, def.id)}
                   onMouseLeave={scheduleClose}
                   onClick={(e) => togglePin(e, def.id)}
@@ -143,25 +155,28 @@ export function BikeLegend({ visible, onToggle, open, handleOpen }: Props) {
                   ⓘ
                 </button>
               </div>
-              <div className="bike-toggle-summary">{def.summary}</div>
+              <div className="bike-toggle-summary">{i18n._(def.summary)}</div>
             </label>
           </div>
         ))}
-        <div className="github-link">
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://github.com/shuuji3/japan-safe-cycling-map"
-            className="source-link"
-          >
-            <svg viewBox="0 0 16 16" className="github-icon" aria-hidden="true">
-              <path
-                fill="currentColor"
-                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"
-              />
-            </svg>
-            Source code
-          </a>
+        <div className="sidebar-footer">
+          <div className="github-link">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://github.com/shuuji3/japan-safe-cycling-map"
+              className="source-link"
+            >
+              <svg viewBox="0 0 16 16" className="github-icon" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+                />
+              </svg>
+              <Trans>ソースコード</Trans>
+            </a>
+          </div>
+          <LanguageToggle locale={locale} onSwitch={(l) => i18n.activate(l)} />
         </div>
           </div>
         </div>
@@ -174,11 +189,13 @@ export function BikeLegend({ visible, onToggle, open, handleOpen }: Props) {
           onMouseEnter={cancelClose}
           onMouseLeave={scheduleClose}
         >
-          <div className="note-heading">このレイヤーが表示しているOSMタグ</div>
+          <div className="note-heading">
+            <Trans>このレイヤーが表示しているOSMタグ</Trans>
+          </div>
           {openDef.attrs.map((a) => (
             <div key={a.tag} className="note-attr">
               <code className="bike-toggle-tag">{a.tag}</code>
-              <span className="note-attr-meaning">{a.meaning}</span>
+              <span className="note-attr-meaning">{i18n._(a.meaning)}</span>
             </div>
           ))}
         </div>

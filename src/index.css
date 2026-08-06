@@ -160,10 +160,29 @@ code {
   padding-left: 22px;
 }
 
+/* Language switcher (日本語 / English), shown in a flex row alongside the
+   source-code link in the sidebar footer. */
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-block-end: 0.5rem;
+}
+
 .github-link {
   display: flex;
   justify-content: end;
-  margin-block-end: 0.5rem;
+}
+
+.lang-toggle {
+  display: inline-flex;
+  gap: 4px;
+  padding: 2px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  flex: none;
 }
 
 .legend-collapse {
@@ -273,6 +292,22 @@ code {
   border-radius: 0.5rem;
 }
 
+.lang-toggle button {
+  border: none;
+  background: #fff;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.35rem;
+  cursor: pointer;
+  font-size: 12px;
+  color: #333;
+  transition: 150ms all ease-in;
+}
+
+.lang-toggle button.active {
+  background: #1a9850;
+  color: #fff;
+}
+
 .search-results {
   list-style: none;
   width: 100%;
@@ -283,9 +318,7 @@ code {
   border-radius: 4px;
   box-shadow: 0 4px 12px rgb(0 0 0 / 0.2);
   overflow: hidden;
-}
-
-.search-result {
+}.search-result {
   padding: 8px 12px;
   font-size: 14px;
   cursor: pointer;

@@ -45,11 +45,11 @@ function neutralizeYellowRoads(map: maplibregl.Map): void {
   }
 }
 
-export function Map() {
+function MapComponent() {
   const mapContainer = React.useRef<HTMLDivElement>(null);
   const mapRef = React.useRef<maplibregl.Map | null>(null);
 
-  // Centering Kanto region
+  // Centering Japan
   const [lng, setLng] = useState(139.9599);
   const [lat, setLat] = useState(35.6493);
   const [zoom, setZoom] = useState(9);
@@ -215,3 +215,5 @@ export function Map() {
     </div>
   );
 }
+
+export const Map = React.memo(MapComponent);

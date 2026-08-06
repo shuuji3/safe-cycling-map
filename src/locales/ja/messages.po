@@ -1,0 +1,189 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2026-08-06 14:53+0900\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: ja\n"
+
+#: src/featureInfo.ts:32
+msgid "OSMエディタ"
+msgstr "OSMエディタ"
+
+#: src/featureInfo.ts:38
+msgid "Rapid"
+msgstr "Rapid"
+
+#: src/BikeLegend.tsx:153
+msgid "{0}が表示しているOSMタグ"
+msgstr "{0}が表示しているOSMタグ"
+
+#: src/bike.ts:49
+msgid "「普通自転車専用通行帯」標識や路面表示により、車道上にペイント等で指定された通行帯"
+msgstr "「普通自転車専用通行帯」標識や路面表示により、車道上にペイント等で指定された通行帯"
+
+#: src/bike.ts:58
+msgid "「自転車及び歩行者専用」標識や「普通自転車歩道通行可」指定のある歩道（歩行者優先）"
+msgstr "「自転車及び歩行者専用」標識や「普通自転車歩道通行可」指定のある歩道（歩行者優先）"
+
+#: src/bike.ts:40
+msgid "「自転車専用」標識がある独立した自転車専用道路（歩行者通行不可）"
+msgstr "「自転車専用」標識がある独立した自転車専用道路（歩行者通行不可）"
+
+#: src/bike.ts:38
+msgid "「自転車専用」標識がある道路、または車道沿いに構造物で分離された自転車道"
+msgstr "「自転車専用」標識がある道路、または車道沿いに構造物で分離された自転車道"
+
+#: src/BikeLegend.tsx:196
+msgid "このレイヤーが表示しているOSMタグ"
+msgstr "このレイヤーが表示しているOSMタグ"
+
+#: src/bike.ts:78
+msgid "その他（付帯設備・属性）"
+msgstr "その他（付帯設備・属性）"
+
+#: src/featureInfo.ts:28
+msgid "ストリートビュー"
+msgstr "ストリートビュー"
+
+#: src/BikeLegend.tsx:179
+msgid "ソースコード"
+msgstr "ソースコード"
+
+#: src/bike.ts:105
+msgid "ナショナルサイクルルート"
+msgstr "ナショナルサイクルルート"
+
+#: src/bike.ts:112
+msgid "リージョナルサイクルルート"
+msgstr "リージョナルサイクルルート"
+
+#: src/featureInfo.ts:55
+msgid "ルート情報"
+msgstr "ルート情報"
+
+#: src/bike.ts:119
+msgid "ローカルサイクルルート"
+msgstr "ローカルサイクルルート"
+
+#: src/bike.ts:83
+msgid "交差点手前の自転車用優先停止スペース（Advanced Stop Line）"
+msgstr "交差点手前の自転車用優先停止スペース（Advanced Stop Line）"
+
+#: src/bike.ts:81
+msgid "交差点等の自転車横断帯"
+msgstr "交差点等の自転車横断帯"
+
+#: src/bike.ts:79
+msgid "交差点設備や、自転車道が車道とは別ラインで描かれている場合などの補足属性"
+msgstr "交差点設備や、自転車道が車道とは別ラインで描かれている場合などの補足属性"
+
+#: src/bike.ts:106
+msgid "国内の主要なルート"
+msgstr "国内の主要なルート"
+
+#: src/bike.ts:99
+msgid "国境を越える国際ルート"
+msgstr "国境を越える国際ルート"
+
+#: src/bike.ts:107
+msgid "国家サイクルネットワーク"
+msgstr "国家サイクルネットワーク"
+
+#: src/bike.ts:100
+msgid "国際サイクルネットワーク"
+msgstr "国際サイクルネットワーク"
+
+#: src/bike.ts:98
+msgid "国際サイクルルート"
+msgstr "国際サイクルルート"
+
+#: src/bike.ts:120
+msgid "地方のルート"
+msgstr "地方のルート"
+
+#: src/bike.ts:113
+msgid "地域をまたぐルート"
+msgstr "地域をまたぐルート"
+
+#: src/bike.ts:114
+msgid "地域サイクルネットワーク"
+msgstr "地域サイクルネットワーク"
+
+#: src/bike.ts:121
+msgid "地方サイクルネットワーク"
+msgstr "地方サイクルネットワーク"
+
+#: src/SearchBox.tsx:106
+msgid "場所を検索"
+msgstr "場所を検索"
+
+#: src/featureInfo.ts:81
+msgid "外部リンク"
+msgstr "外部リンク"
+
+#: src/bike.ts:68
+msgid "専用通行帯はなく車道を自動車と共有する区間。矢羽根型表示（ナビライン）等で走行位置を提示"
+msgstr "専用通行帯はなく車道を自動車と共有する区間。矢羽根型表示（ナビライン）等で走行位置を提示"
+
+#: src/bike.ts:60
+msgid "指定標識等により自転車の通行が許可・指定された歩道"
+msgstr "指定標識等により自転車の通行が許可・指定された歩道"
+
+#: src/bike.ts:70
+msgid "矢羽根型表示（ナビマーク・ナビライン）がある車道共有区間"
+msgstr "矢羽根型表示（ナビマーク・ナビライン）がある車道共有区間"
+
+#: src/bike.ts:61
+msgid "自転車の通行が指定されている道路・通行区分"
+msgstr "自転車の通行が指定されている道路・通行区分"
+
+#: src/bike.ts:48
+msgid "自転車専用通行帯（自転車レーン）"
+msgstr "自転車専用通行帯（自転車レーン）"
+
+#: src/bike.ts:37
+msgid "自転車専用道路・自転車道"
+msgstr "自転車専用道路・自転車道"
+
+#: src/bike.ts:57
+msgid "自転車歩行者道（自歩道）"
+msgstr "自転車歩行者道（自歩道）"
+
+#: src/bike.ts:82
+msgid "自転車道が車道本体とは別の独立したライン（ウェイ）として作成済み"
+msgstr "自転車道が車道本体とは別の独立したライン（ウェイ）として作成済み"
+
+#: src/BikeLegend.tsx:103
+msgid "自転車道のカテゴリー"
+msgstr "自転車道のカテゴリー"
+
+#: src/bike.ts:51
+msgid "車道上に区画線やカラー塗装で設けられた自転車専用通行帯"
+msgstr "車道上に区画線やカラー塗装で設けられた自転車専用通行帯"
+
+#: src/bike.ts:71
+msgid "車道上の走行推奨ライン（アドバイザリーレーン）"
+msgstr "車道上の走行推奨ライン（アドバイザリーレーン）"
+
+#: src/bike.ts:67
+msgid "車道共有（矢羽根・ナビマーク）"
+msgstr "車道共有（矢羽根・ナビマーク）"
+
+#: src/bike.ts:41
+msgid "車道沿いに縁石や柵などの構造物で分離された自転車道（ウェイ未分離時）"
+msgstr "車道沿いに縁石や柵などの構造物で分離された自転車道（ウェイ未分離時）"
+
+#: src/BikeLegend.tsx:107
+#: src/featureInfo.ts:76
+msgid "閉じる"
+msgstr "閉じる"
+
+#: src/BikeLegend.tsx:107
+msgid "開く"
+msgstr "開く"
+
+#: src/featureInfo.ts:79
+msgid "（データなし）"
+msgstr "（データなし）"
