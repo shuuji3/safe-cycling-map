@@ -44,8 +44,8 @@ msgid "その他（付帯設備・属性）"
 msgstr "その他（付帯設備・属性）"
 
 #: src/featureInfo.ts:28
-msgid "ストリートビュー"
-msgstr "ストリートビュー"
+msgid "Street View"
+msgstr "Street View"
 
 #: src/BikeLegend.tsx:179
 msgid "ソースコード"

@@ -25,7 +25,7 @@ function buildLinks(
   const idParam = type === "node" ? `n` : type === "relation" ? `r` : `w`;
   return [
     {
-      label: t`ストリートビュー`,
+      label: t`Street View`,
       href: `https://www.google.com/maps?layer=c&cbll=${lat},${lng}&cbp=11,0,0,0,0`,
     },
     {
