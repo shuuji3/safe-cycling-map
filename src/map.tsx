@@ -16,35 +16,6 @@ import {
 import { featurePopover } from "./featureInfo";
 maplibregl.workerUrl = "/maplibre-gl-csp-worker.js";
 
-// No yellowish roads — liberty's warm palette is re-hued to a light cool-blue
-// ramp so nothing clashes with the bike colors and it stays a light-theme map
-// (fills are pale, casings only slightly darker). Hierarchy comes from the
-// fill strength (motorway most present, minor lightest). Applied across
-// road_/tunnel_/bridge_ groups. Bike lines are untouched.
-const ROAD_COOL: Record<string, { fill: string; casing: string }> = {
-  motorway: { fill: "#a5bfd4", casing: "#8ba8c0" },
-  motorway_link: { fill: "#a5bfd4", casing: "#8ba8c0" },
-  trunk_primary: { fill: "#b6cce0", casing: "#9db9cf" },
-  secondary_tertiary: { fill: "#c6d8e8", casing: "#b0c7da" },
-  link: { fill: "#d3e2ee", casing: "#bed2e2" },
-};
-const ROAD_PREFIXES = ["road", "tunnel", "bridge"];
-
-function neutralizeYellowRoads(map: maplibregl.Map): void {
-  for (const prefix of ROAD_PREFIXES) {
-    for (const [type, colors] of Object.entries(ROAD_COOL)) {
-      const fill = `${prefix}_${type}`;
-      if (map.getLayer(fill)) {
-        map.setPaintProperty(fill, "line-color", colors.fill);
-      }
-      const casing = `${prefix}_${type}_casing`;
-      if (map.getLayer(casing)) {
-        map.setPaintProperty(casing, "line-color", colors.casing);
-      }
-    }
-  }
-}
-
 function MapComponent() {
   const mapContainer = React.useRef<HTMLDivElement>(null);
   const mapRef = React.useRef<maplibregl.Map | null>(null);
@@ -78,12 +49,11 @@ function MapComponent() {
       center: [lng, lat],
       zoom: zoom,
       hash: true,
-      style: "https://tiles.openfreemap.org/styles/liberty",
+      style: "https://api.protomaps.com/styles/v5/light/en.json?key=51f8408cd47ce4e9",
     });
     mapRef.current = map;
 
     map.on("load", () => {
-      neutralizeYellowRoads(map);
       initBikeLayers(map);
       // Layers are initially added hidden; default all facility types to visible.
       for (const def of BIKE_CLASSES) {
