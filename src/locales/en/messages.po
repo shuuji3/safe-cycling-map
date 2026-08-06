@@ -1,5 +1,15 @@
 msgid ""
 msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language: \n"
+"Language-Team: \n"
+"Content-Type: \n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
 
 #: src/featureInfo.ts:32
 msgid "OSMエディタ"
@@ -9,7 +19,11 @@ msgstr "OpenStreetMap editor"
 msgid "Rapid"
 msgstr "Rapid"
 
-#: src/BikeLegend.tsx:153
+#: src/featureInfo.ts:28
+msgid "Street View"
+msgstr "Street View"
+
+#: src/BikeLegend.tsx:150
 msgid "{0}が表示しているOSMタグ"
 msgstr "OSM tags displayed by {0}"
 
@@ -29,7 +43,7 @@ msgstr "Dedicated cycle track with a 'bicycle only' sign (pedestrians not permit
 msgid "「自転車専用」標識がある道路、または車道沿いに構造物で分離された自転車道"
 msgstr "Road with a 'bicycle only' sign, or a cycle track separated from the carriageway by a physical structure"
 
-#: src/BikeLegend.tsx:196
+#: src/BikeLegend.tsx:193
 msgid "このレイヤーが表示しているOSMタグ"
 msgstr "OSM tags displayed by this layer"
 
@@ -37,11 +51,7 @@ msgstr "OSM tags displayed by this layer"
 msgid "その他（付帯設備・属性）"
 msgstr "Other (auxiliary facilities and attributes)"
 
-#: src/featureInfo.ts:28
-msgid "Street View"
-msgstr "Street View"
-
-#: src/BikeLegend.tsx:179
+#: src/BikeLegend.tsx:176
 msgid "ソースコード"
 msgstr "Source code"
 
@@ -94,8 +104,16 @@ msgid "国際サイクルルート"
 msgstr "International cycle route"
 
 #: src/bike.ts:120
-msgid "地方のルート"
+msgid "地元のルート"
 msgstr "Local route"
+
+#: src/LayerSwitcher.tsx:13
+msgid "地図"
+msgstr "Map"
+
+#: src/LayerSwitcher.tsx:22
+msgid "地図に切り替え"
+msgstr "Switch to map"
 
 #: src/bike.ts:113
 msgid "地域をまたぐルート"
@@ -104,6 +122,10 @@ msgstr "Route spanning multiple regions"
 #: src/bike.ts:114
 msgid "地域サイクルネットワーク"
 msgstr "Regional cycle network"
+
+#: src/bike.ts:120
+#~ msgid "地方のルート"
+#~ msgstr "Local route"
 
 #: src/bike.ts:121
 msgid "地方サイクルネットワーク"
@@ -149,9 +171,17 @@ msgstr "Sidewalk shared by bicycles and pedestrians"
 msgid "自転車道が車道本体とは別の独立したライン（ウェイ）として作成済み"
 msgstr "Cycleway already mapped as a separate line (way) from the carriageway itself"
 
-#: src/BikeLegend.tsx:103
+#: src/BikeLegend.tsx:100
 msgid "自転車道のカテゴリー"
 msgstr "Cycleway categories"
+
+#: src/LayerSwitcher.tsx:13
+msgid "航空写真"
+msgstr "Aerial"
+
+#: src/LayerSwitcher.tsx:22
+msgid "航空写真に切り替え"
+msgstr "Switch to aerial"
 
 #: src/bike.ts:51
 msgid "車道上に区画線やカラー塗装で設けられた自転車専用通行帯"
@@ -169,16 +199,15 @@ msgstr "Shared carriageway (sharrows / navi marks)"
 msgid "車道沿いに縁石や柵などの構造物で分離された自転車道（ウェイ未分離時）"
 msgstr "Cycle track separated from the carriageway by a kerb, fence, or other structure (when not mapped as a separate way)"
 
-#: src/BikeLegend.tsx:107
+#: src/BikeLegend.tsx:104
 #: src/featureInfo.ts:76
 msgid "閉じる"
 msgstr "Close"
 
-#: src/BikeLegend.tsx:107
+#: src/BikeLegend.tsx:104
 msgid "開く"
 msgstr "Open"
 
 #: src/featureInfo.ts:79
 msgid "（データなし）"
 msgstr "(No data)"
-

@@ -14,6 +14,8 @@ import {
   setRouteNetworkVisible,
 } from "./bike";
 import { featurePopover } from "./featureInfo";
+import { applyBasemap, Basemap } from "./basemap";
+import { LayerSwitcher } from "./LayerSwitcher";
 maplibregl.workerUrl = "/maplibre-gl-csp-worker.js";
 
 function MapComponent() {
@@ -36,6 +38,11 @@ function MapComponent() {
     () => typeof window === "undefined" || window.innerWidth > 768,
   );
 
+  // Which basemap is shown: Protomaps street map, or GSI satellite hybrid.
+  const [basemap, setBasemap] = useState<Basemap>("map");
+  const basemapRef = React.useRef(basemap);
+  basemapRef.current = basemap;
+
   useEffect(() => {
     if (mapContainer.current === null) {
       return;
@@ -55,6 +62,8 @@ function MapComponent() {
 
     map.on("load", () => {
       initBikeLayers(map);
+      // Start from the requested basemap (style is fully loaded here).
+      applyBasemap(map, basemapRef.current);
       // Layers are initially added hidden; default all facility types to visible.
       for (const def of BIKE_CLASSES) {
         setBikeClassVisible(map, def.id, true);
@@ -166,6 +175,15 @@ function MapComponent() {
     }
   }, [visible]);
 
+  // Switch basemap (street <-> satellite hybrid) at runtime.
+  useEffect(() => {
+    const map = mapRef.current;
+    // Skip until the style document has loaded (getStyle() is unsafe earlier).
+    if (map && map.isStyleLoaded()) {
+      applyBasemap(map, basemap);
+    }
+  }, [basemap]);
+
   return (
     <div>
       <SearchBox
@@ -181,6 +199,7 @@ function MapComponent() {
         open={legendOpen}
         handleOpen={() => setLegendOpen((v) => !v)}
       />
+      <LayerSwitcher mode={basemap} onToggle={setBasemap} />
       <div ref={mapContainer} className="map-container" />
     </div>
   );

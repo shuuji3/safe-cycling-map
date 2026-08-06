@@ -6,6 +6,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: ja\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
 
 #: src/featureInfo.ts:32
 msgid "OSMエディタ"
@@ -15,7 +21,11 @@ msgstr "OSMエディタ"
 msgid "Rapid"
 msgstr "Rapid"
 
-#: src/BikeLegend.tsx:153
+#: src/featureInfo.ts:28
+msgid "Street View"
+msgstr "Street View"
+
+#: src/BikeLegend.tsx:150
 msgid "{0}が表示しているOSMタグ"
 msgstr "{0}が表示しているOSMタグ"
 
@@ -35,7 +45,7 @@ msgstr "「自転車専用」標識がある独立した自転車専用道路（
 msgid "「自転車専用」標識がある道路、または車道沿いに構造物で分離された自転車道"
 msgstr "「自転車専用」標識がある道路、または車道沿いに構造物で分離された自転車道"
 
-#: src/BikeLegend.tsx:196
+#: src/BikeLegend.tsx:193
 msgid "このレイヤーが表示しているOSMタグ"
 msgstr "このレイヤーが表示しているOSMタグ"
 
@@ -43,11 +53,7 @@ msgstr "このレイヤーが表示しているOSMタグ"
 msgid "その他（付帯設備・属性）"
 msgstr "その他（付帯設備・属性）"
 
-#: src/featureInfo.ts:28
-msgid "Street View"
-msgstr "Street View"
-
-#: src/BikeLegend.tsx:179
+#: src/BikeLegend.tsx:176
 msgid "ソースコード"
 msgstr "ソースコード"
 
@@ -100,8 +106,16 @@ msgid "国際サイクルルート"
 msgstr "国際サイクルルート"
 
 #: src/bike.ts:120
-msgid "地方のルート"
-msgstr "地方のルート"
+msgid "地元のルート"
+msgstr "地元のルート"
+
+#: src/LayerSwitcher.tsx:13
+msgid "地図"
+msgstr "地図"
+
+#: src/LayerSwitcher.tsx:22
+msgid "地図に切り替え"
+msgstr "地図に切り替え"
 
 #: src/bike.ts:113
 msgid "地域をまたぐルート"
@@ -110,6 +124,10 @@ msgstr "地域をまたぐルート"
 #: src/bike.ts:114
 msgid "地域サイクルネットワーク"
 msgstr "地域サイクルネットワーク"
+
+#: src/bike.ts:120
+#~ msgid "地方のルート"
+#~ msgstr "地方のルート"
 
 #: src/bike.ts:121
 msgid "地方サイクルネットワーク"
@@ -155,9 +173,17 @@ msgstr "自転車歩行者道（自歩道）"
 msgid "自転車道が車道本体とは別の独立したライン（ウェイ）として作成済み"
 msgstr "自転車道が車道本体とは別の独立したライン（ウェイ）として作成済み"
 
-#: src/BikeLegend.tsx:103
+#: src/BikeLegend.tsx:100
 msgid "自転車道のカテゴリー"
 msgstr "自転車道のカテゴリー"
+
+#: src/LayerSwitcher.tsx:13
+msgid "航空写真"
+msgstr "航空写真"
+
+#: src/LayerSwitcher.tsx:22
+msgid "航空写真に切り替え"
+msgstr "航空写真に切り替え"
 
 #: src/bike.ts:51
 msgid "車道上に区画線やカラー塗装で設けられた自転車専用通行帯"
@@ -175,12 +201,12 @@ msgstr "車道共有（矢羽根・ナビマーク）"
 msgid "車道沿いに縁石や柵などの構造物で分離された自転車道（ウェイ未分離時）"
 msgstr "車道沿いに縁石や柵などの構造物で分離された自転車道（ウェイ未分離時）"
 
-#: src/BikeLegend.tsx:107
+#: src/BikeLegend.tsx:104
 #: src/featureInfo.ts:76
 msgid "閉じる"
 msgstr "閉じる"
 
-#: src/BikeLegend.tsx:107
+#: src/BikeLegend.tsx:104
 msgid "開く"
 msgstr "開く"
 
