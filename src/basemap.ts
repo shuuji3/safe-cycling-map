@@ -21,8 +21,15 @@ export const GSI_ATTRIBUTION = [
 // Symbol layers omitted from the aerial hybrid (house numbers, road-arrow icons).
 const HIDE_IF_SYMBOL = new Set(["address_label", "roads_oneway"]);
 // Keep the lines (roads/water/rail/boundaries) but semi-transparent so the
-// satellite photo still reads through instead of being painted over solidly.
-const AERIAL_LINE_OPACITY = 0.4;
+// satellite photo still reads through. Main roads (highway/major) keep a stronger
+// presence; minor/sub roads, water, rail and boundaries are faded more so the
+// photo isn't overpowered by pale line work.
+const MAJOR_LINE_OPACITY = 0.4;
+const MINOR_LINE_OPACITY = 0.2;
+
+function lineOpacityFor(id: string): number {
+  return /highway|major/.test(id) ? MAJOR_LINE_OPACITY : MINOR_LINE_OPACITY;
+}
 
 function isProtomapsLayer(map: maplibregl.Map, id: string): boolean {
   const l = map.getLayer(id);
@@ -37,13 +44,13 @@ function bottomAnchorId(map: maplibregl.Map): string | undefined {
   return first ? first.id : undefined;
 }
 
-function setLineOpacity(map: maplibregl.Map, opacity: number | undefined): void {
+function setLineOpacity(map: maplibregl.Map, opacityFor: (id: string) => number | undefined): void {
   for (const l of map.getStyle().layers) {
     if (!isProtomapsLayer(map, l.id) || l.type !== "line") {
       continue;
     }
     try {
-      map.setPaintProperty(l.id, "line-opacity", opacity);
+      map.setPaintProperty(l.id, "line-opacity", opacityFor(l.id));
     } catch {
       /* ignore */
     }
@@ -123,10 +130,10 @@ export function applyBasemap(map: maplibregl.Map, mode: Basemap): void {
   if (mode === "aerial") {
     ensureSatellite(map);
     hideOpaqueLayers(map);
-    setLineOpacity(map, AERIAL_LINE_OPACITY);
+    setLineOpacity(map, lineOpacityFor);
   } else {
     showAllLayers(map);
-    setLineOpacity(map, undefined);
+    setLineOpacity(map, () => undefined);
     removeSatellite(map);
   }
 }
