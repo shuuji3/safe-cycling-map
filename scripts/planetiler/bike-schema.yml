@@ -36,6 +36,7 @@ layers:
             - cycleway: __any__
             - cycleway:left: __any__
             - cycleway:right: __any__
+            - cycleway:both: __any__
             # shared footways/roads where cycling is allowed
             - __all__:
                 highway:
@@ -47,28 +48,46 @@ layers:
                   - yes
                   - permissive
         attributes:
-          # facility type, captures the safety-relevant distinction:
-          #   cycleway       = highway=cycleway (自転車専用道路, dedicated)
-          #   track          = cycleway=track (自転車道, separated track on a road)
-          #   bike_lane      = cycleway=lane (自転車レーン, legal/dedicated bike lane)
-          #   advisory_lane  = cycleway=lane + cycleway:lane=advisory (推奨レーン,
-          #                    suggestion lane, painted but NOT exclusive)
-          #   shared_lane    = cycleway=shared_lane (自転車ナビライン, painted sharrow,
-          #                    shared lane, NOT legal)
+          # facility type, captures the safety-relevant distinction.
+          # Per JA:Tag:highway=cycleway "日本での解釈" (2019 decision):
+          #   cycleway    = highway=cycleway (自転車専用道路, sign 325-2, dedicated)
+          #   track       = cycleway=track (自転車道, separated track alongside a road)
+          #   bike_lane   = cycleway=lane (自転車レーン / 普通自転車専用通行帯,
+          #                 sign 326-2-A). `cycleway:*:lane=advisory` is a common
+          #                 sub-detail (Japanese bike lanes are usually not legally
+          #                 exclusive) but it does NOT change the class — still 自転車レーン.
+          #   shared_lane = cycleway=shared_lane (自転車ナビライン, painted sharrow,
+          #                 cycleway:lane=pictogram, NOT a legal lane)
           #   bicycle_designated = shared footway/path where bicycle=designated
-          #   other          = any other cycleway* value
+          #   other       = any other cycleway* value
+          #
+          # NOTE: cycleway:*:lane=advisory does NOT create a class of its own — it is
+          # a common sub-detail of a bike lane (自転車レーン) and still maps to bike_lane.
+          # cycleway=shared_lane + cycleway:lane=pictogram maps to shared_lane.
           - key: class
             value: >-
               ${ feature.tags.has("highway","cycleway") ? "cycleway" :
-              (feature.tags.has("cycleway","track") || feature.tags.has("cycleway:left","track") || feature.tags.has("cycleway:right","track")) ? "track" :
-              (feature.tags.has("cycleway","shared_lane") || feature.tags.has("cycleway:left","shared_lane") || feature.tags.has("cycleway:right","shared_lane")) ? "shared_lane" :
-              feature.tags.has("cycleway:lane","advisory") ? "advisory_lane" :
-              (feature.tags.has("cycleway","lane") || feature.tags.has("cycleway:left","lane") || feature.tags.has("cycleway:right","lane")) ? "bike_lane" :
-              feature.tags.has("bicycle") ? "bicycle_designated" : "other" }
+              (feature.tags.has("cycleway","track") || feature.tags.has("cycleway:left","track") || feature.tags.has("cycleway:right","track") || feature.tags.has("cycleway:both","track")) ? "track" :
+              (feature.tags.has("cycleway","lane") || feature.tags.has("cycleway:left","lane") || feature.tags.has("cycleway:right","lane") || feature.tags.has("cycleway:both","lane")) ? "bike_lane" :
+              (feature.tags.has("cycleway","shared_lane") || feature.tags.has("cycleway:left","shared_lane") || feature.tags.has("cycleway:right","shared_lane") || feature.tags.has("cycleway:both","shared_lane")) ? "shared_lane" :
+              ((feature.tags.has("highway","footway","path","pedestrian") && feature.tags.has("bicycle","designated","yes","permissive")) ? "bicycle_designated" : "other") }
           - key: highway
           - key: oneway
+          - key: oneway:bicycle
           - key: name
           - key: bicycle
+          - key: cycleway
+          - key: cycleway:left
+          - key: cycleway:right
+          - key: cycleway:both
+          - key: cycleway:lane
+          - key: cycleway:left:lane
+          - key: cycleway:right:lane
+          - key: cycleway:both:lane
+          - key: cycleway:oneway
+          - key: cycleway:left:oneway
+          - key: cycleway:right:oneway
+          - key: cycleway:both:oneway
 examples:
   - name: dedicated cycleway
     input:
@@ -127,21 +146,6 @@ examples:
         tags:
           class: shared_lane
           highway: residential
-  - name: advisory (suggestion) lane (推奨レーン)
-    input:
-      geometry: line
-      source: osm
-      tags:
-        highway: secondary
-        cycleway: lane
-        cycleway:lane: advisory
-    output:
-      - layer: bike
-        geometry: line
-        min_zoom: 0
-        tags:
-          class: advisory_lane
-          highway: secondary
   - name: separated cycle track
     input:
       geometry: line
@@ -171,6 +175,111 @@ examples:
           class: bicycle_designated
           highway: footway
           bicycle: designated
+  - name: shared footway with bicycle yes
+    input:
+      geometry: line
+      source: osm
+      tags:
+        highway: path
+        bicycle: yes
+    output:
+      - layer: bike
+        geometry: line
+        min_zoom: 0
+        tags:
+          class: bicycle_designated
+          highway: path
+          bicycle: yes
+  - name: shared pedestrian zone with bicycle permissive
+    input:
+      geometry: line
+      source: osm
+      tags:
+        highway: pedestrian
+        bicycle: permissive
+    output:
+      - layer: bike
+        geometry: line
+        min_zoom: 0
+        tags:
+          class: bicycle_designated
+          highway: pedestrian
+          bicycle: permissive
+  - name: plain road with bicycle extends should not be designated
+    input:
+      geometry: line
+      source: osm
+      tags:
+        highway: primary
+        bicycle: yes
+    output: []
+  - name: footway with bicycle no should not be designated
+    input:
+      geometry: line
+      source: osm
+      tags:
+        highway: footway
+        bicycle: no
+    output: []
+  - name: "advisory lane stays bike_lane (日本: 自転車レーン)"
+    input:
+      geometry: line
+      source: osm
+      tags:
+        highway: secondary
+        cycleway: lane
+        cycleway:lane: advisory
+    output:
+      - layer: bike
+        geometry: line
+        min_zoom: 0
+        tags:
+          class: bike_lane
+          highway: secondary
+  - name: exclusive lane stays bike_lane
+    input:
+      geometry: line
+      source: osm
+      tags:
+        highway: secondary
+        cycleway: lane
+        cycleway:lane: exclusive
+    output:
+      - layer: bike
+        geometry: line
+        min_zoom: 0
+        tags:
+          class: bike_lane
+          highway: secondary
+  - name: pictogram shared-lane (自転車ナビマーク)
+    input:
+      geometry: line
+      source: osm
+      tags:
+        highway: residential
+        cycleway: shared_lane
+        cycleway:lane: pictogram
+    output:
+      - layer: bike
+        geometry: line
+        min_zoom: 0
+        tags:
+          class: shared_lane
+          highway: residential
+  - name: cycleway other value (crossing facilities)
+    input:
+      geometry: line
+      source: osm
+      tags:
+        highway: residential
+        cycleway: crossing
+    output:
+      - layer: bike
+        geometry: line
+        min_zoom: 0
+        tags:
+          class: other
+          highway: residential
   - name: national cycle route member way
     input:
       geometry: line
