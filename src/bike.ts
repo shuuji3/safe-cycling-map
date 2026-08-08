@@ -135,6 +135,10 @@ function ensureProtocol(): void {
 }
 
 function sourceUrl(): string {
+  const external = process.env.REACT_APP_BIKE_PMTILES_URL;
+  if (external) {
+    return "pmtiles://" + external;
+  }
   // Static host: build an absolute URL from /bike.pmtiles
   return "pmtiles://" + window.location.origin + "/bike.pmtiles";
 }

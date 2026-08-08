@@ -6,3 +6,6 @@ build/
 
 # Downloaded OSM extracts and Planetiler temp data
 data/
+
+# Generated bike tiles (uploaded to R2, not committed)
+public/bike.pmtiles

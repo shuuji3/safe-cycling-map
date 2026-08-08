@@ -35,6 +35,8 @@ jobs:
         run: npm ci
 
       - name: Build
+        env:
+          REACT_APP_BIKE_PMTILES_URL: https://storage.japan-safe-cycling-map.shuuji3.xyz/bike.pmtiles
         run: npm run build
 
       - name: Upload artifact
