@@ -192,9 +192,13 @@ export function BikeLegend({
           <div className="note-heading">
             <Trans>このレイヤーが表示しているOSMタグ</Trans>
           </div>
-          {openDef.attrs.map((a) => (
-            <div key={a.tag} className="note-attr">
-              <code className="bike-toggle-tag">{a.tag}</code>
+          {openDef.attrs.map((a, i) => (
+            <div key={i} className="note-attr">
+              <div className="note-attr-tags">
+                {a.tags.map((t) => (
+                  <code key={t} className="bike-toggle-tag">{t}</code>
+                ))}
+              </div>
               <span className="note-attr-meaning">{i18n._(a.meaning)}</span>
             </div>
           ))}

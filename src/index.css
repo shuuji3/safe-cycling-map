@@ -262,8 +262,19 @@ code {
 
 .note-attr {
   display: flex;
-  align-items: baseline;
-  gap: 6px;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.note-attr-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.note-attr-meaning {
+  color: #555;
 }
 
 .bike-toggle-tag {

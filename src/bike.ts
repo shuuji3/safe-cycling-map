@@ -5,8 +5,8 @@ import { MessageDescriptor } from "@lingui/core";
 
 /** one OSM attribute shown in the popover, with its own plain-language meaning */
 export interface BikeAttr {
-  /** OSM tag rendered as <code>, e.g. "highway=cycleway" */
-  tag: string;
+  /** real OSM tags rendered each in its own <code>, e.g. "cycleway=track" plus "cycleway:left" / "cycleway:right" / "cycleway:both" */
+  tags: string[];
   /** translatable plain-language explanation of this attribute */
   meaning: MessageDescriptor;
 }
@@ -26,19 +26,14 @@ interface BikeClassDef {
   dasharray?: number[];
 }
 
-// Cycling infrastructure ("cycleway" key).
-// Colors use a colorblind-safe diverging ramp (RdYlGn) that encodes safety:
-// green = safest (physically separated), red = most dangerous (shared motor traffic).
-// NOTE: advisory_lane (`cycleway=lane` + `cycleway:lane=advisory`, suggestion lane)
-// stays in the tile data but is folded into the shared_lane UI/color (no own checkbox).
 export const BIKE_CLASSES: BikeClassDef[] = [
     {
       id: "cycleway",
       name: defineMessage({ message: "自転車専用道路・自転車道" }),
       summary: defineMessage({ message: "「自転車専用」標識がある道路、または車道沿いに構造物で分離された自転車道" }),
       attrs: [
-        { tag: "highway=cycleway", meaning: defineMessage({ message: "「自転車専用」標識がある独立した自転車専用道路（歩行者通行不可）" }) },
-        { tag: "cycleway=track", meaning: defineMessage({ message: "車道沿いに縁石や柵などの構造物で分離された自転車道（ウェイ未分離時）" }) },
+        { tags: ["highway=cycleway"], meaning: defineMessage({ message: "「自転車専用」標識がある独立した自転車専用道路（歩行者通行不可）" }) },
+        { tags: ["cycleway=track", "cycleway:left", "cycleway:right", "cycleway:both"], meaning: defineMessage({ message: "車道沿いに縁石や柵などの構造物で分離された自転車道" }) },
       ],
       aliases: ["track"],
       color: "#1a9850",
@@ -48,7 +43,7 @@ export const BIKE_CLASSES: BikeClassDef[] = [
       name: defineMessage({ message: "自転車専用通行帯（自転車レーン）" }),
       summary: defineMessage({ message: "「普通自転車専用通行帯」標識や路面表示により、車道上にペイント等で指定された通行帯" }),
       attrs: [
-        { tag: "cycleway=lane", meaning: defineMessage({ message: "車道上に区画線やカラー塗装で設けられた自転車専用通行帯" }) },
+        { tags: ["cycleway=lane", "cycleway:left", "cycleway:right", "cycleway:both", "cycleway:lane=advisory"], meaning: defineMessage({ message: "車道上に区画線やカラー塗装で設けられた自転車専用通行帯（自転車レーン）" }) },
       ],
       color: "#91cf60",
     },
@@ -57,8 +52,8 @@ export const BIKE_CLASSES: BikeClassDef[] = [
       name: defineMessage({ message: "自転車歩行者道（自歩道）" }),
       summary: defineMessage({ message: "「自転車及び歩行者専用」標識や「普通自転車歩道通行可」指定のある歩道（歩行者優先）" }),
       attrs: [
-        { tag: "highway=footway + bicycle=yes", meaning: defineMessage({ message: "指定標識等により自転車の通行が許可・指定された歩道" }) },
-        { tag: "bicycle=designated", meaning: defineMessage({ message: "自転車の通行が指定されている道路・通行区分" }) },
+        { tags: ["highway=footway + bicycle=yes"], meaning: defineMessage({ message: "指定標識等により自転車の通行が許可・指定された歩道" }) },
+        { tags: ["bicycle=designated"], meaning: defineMessage({ message: "自転車の通行が指定されている道路・通行区分" }) },
       ],
       color: "#fdae61",
     },
@@ -67,10 +62,8 @@ export const BIKE_CLASSES: BikeClassDef[] = [
       name: defineMessage({ message: "車道共有（矢羽根・ナビマーク）" }),
       summary: defineMessage({ message: "専用通行帯はなく車道を自動車と共有する区間。矢羽根型表示（ナビライン）等で走行位置を提示" }),
       attrs: [
-        { tag: "cycleway=shared_lane", meaning: defineMessage({ message: "矢羽根型表示（ナビマーク・ナビライン）がある車道共有区間" }) },
-        { tag: "cycleway:lane=advisory", meaning: defineMessage({ message: "車道上の走行推奨ライン（アドバイザリーレーン）" }) },
+        { tags: ["cycleway=shared_lane", "cycleway:left", "cycleway:right", "cycleway:both", "cycleway:lane=pictogram"], meaning: defineMessage({ message: "矢羽根型表示（ナビマーク・ナビライン）がある車道共有区間" }) },
       ],
-      aliases: ["advisory_lane"],
       color: "#d73027",
     },
     {
@@ -78,9 +71,9 @@ export const BIKE_CLASSES: BikeClassDef[] = [
       name: defineMessage({ message: "その他（付帯設備・属性）" }),
       summary: defineMessage({ message: "交差点設備や、自転車道が車道とは別ラインで描かれている場合などの補足属性" }),
       attrs: [
-        { tag: "cycleway=crossing", meaning: defineMessage({ message: "交差点等の自転車横断帯" }) },
-        { tag: "cycleway=separate", meaning: defineMessage({ message: "自転車道が車道本体とは別の独立したライン（ウェイ）として作成済み" }) },
-        { tag: "cycleway=asl", meaning: defineMessage({ message: "交差点手前の自転車用優先停止スペース（Advanced Stop Line）" }) },
+        { tags: ["cycleway=crossing"], meaning: defineMessage({ message: "交差点等の自転車横断帯" }) },
+        { tags: ["cycleway=separate"], meaning: defineMessage({ message: "自転車道が車道本体とは別の独立したライン（ウェイ）として作成済み" }) },
+        { tags: ["cycleway=asl"], meaning: defineMessage({ message: "交差点手前の自転車用優先停止スペース（Advanced Stop Line）" }) },
       ],
       color: "#969696",
     },
@@ -97,28 +90,28 @@ export const ROUTE_NETWORKS: BikeClassDef[] = [
     id: "icn",
     name: defineMessage({ message: "国際サイクルルート" }),
     summary: defineMessage({ message: "国境を越える国際ルート" }),
-    attrs: [{ tag: "network=icn", meaning: defineMessage({ message: "国際サイクルネットワーク" }) }],
+    attrs: [{ tags: ["network=icn"], meaning: defineMessage({ message: "国際サイクルネットワーク" }) }],
     color: "#1a9850",
   },
   {
     id: "ncn",
     name: defineMessage({ message: "ナショナルサイクルルート" }),
     summary: defineMessage({ message: "国内の主要なルート" }),
-    attrs: [{ tag: "network=ncn", meaning: defineMessage({ message: "国家サイクルネットワーク" }) }],
+    attrs: [{ tags: ["network=ncn"], meaning: defineMessage({ message: "国家サイクルネットワーク" }) }],
     color: "#1a9850",
   },
   {
     id: "rcn",
     name: defineMessage({ message: "リージョナルサイクルルート" }),
     summary: defineMessage({ message: "地域をまたぐルート" }),
-    attrs: [{ tag: "network=rcn", meaning: defineMessage({ message: "地域サイクルネットワーク" }) }],
+    attrs: [{ tags: ["network=rcn"], meaning: defineMessage({ message: "地域サイクルネットワーク" }) }],
     color: "#1a9850",
   },
   {
     id: "lcn",
     name: defineMessage({ message: "ローカルサイクルルート" }),
     summary: defineMessage({ message: "地元のルート" }),
-    attrs: [{ tag: "network=lcn", meaning: defineMessage({ message: "地方サイクルネットワーク" }) }],
+    attrs: [{ tags: ["network=lcn"], meaning: defineMessage({ message: "地方サイクルネットワーク" }) }],
     color: "#1a9850",
   },
 ];
@@ -194,7 +187,7 @@ export function initBikeLayers(map: maplibregl.Map): void {
           "line-dasharray": def.dasharray || [1, 0],
         },
         // A def with aliases renders those extra data classes under this layer too
-        // (e.g. advisory_lane folded into shared_lane).
+        // (e.g. track under the cycleway layer).
         "filter":
           def.aliases && def.aliases.length
             ? ["in", "class", def.id, ...def.aliases]
